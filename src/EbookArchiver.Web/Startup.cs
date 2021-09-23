@@ -1,19 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.Identity.Web;
-using Microsoft.Identity.Web.UI;
+using EbookArchiver.Data.MySql;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.UI;
 
 namespace EbookArchiver.Web
 {
@@ -38,8 +32,16 @@ namespace EbookArchiver.Web
                 options.FallbackPolicy = options.DefaultPolicy;
             });
             services.AddRazorPages()
-                .AddMvcOptions(options => {})
+                .AddMvcOptions(options => { })
                 .AddMicrosoftIdentityUI();
+
+            var connection = Configuration.GetValue<string>("MYSQLCONNSTR_localdb");
+            services.AddDbContext<EbookArchiverDbContext>(options =>
+                options.UseMySql(connection,
+                    ServerVersion.AutoDetect(connection),
+                    b => b.MigrationsAssembly("EbookArchiver.Data.MySql")
+                )
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
