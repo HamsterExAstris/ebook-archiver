@@ -10,7 +10,7 @@ updates:
   # Enable version updates for NPM 
   - package-ecosystem: "npm"
     # Look for NPM dependency info from the `root` directory
-    directory: "/"
+    directory: "/src/EbookArchiver.Web"
     # Check the nuget registry for updates every day (weekdays)
     schedule: 
       interval: "daily"
