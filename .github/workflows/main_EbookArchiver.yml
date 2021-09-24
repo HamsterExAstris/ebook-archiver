@@ -24,18 +24,32 @@ jobs:
 
     - name: Build with dotnet
       run: dotnet build --configuration Release
+      
+    - name: Test with dotnet
+      run: dotnet test --logger trx --results-directory "TestResults"
+      
+    - name: Upload dotnet test results
+      uses: actions/upload-artifact@v2
+      with:
+        name: dotnet-results
+        path: TestResults
+      # Use always() to always run this step to publish test results when there are test failures
+      if: ${{ always() }}
 
     - name: dotnet publish
       run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+      if: ${{ github.ref == 'refs/heads/main' }}
 
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v2
       with:
         name: .net-app
         path: ${{env.DOTNET_ROOT}}/myapp
+      if: ${{ github.ref == 'refs/heads/main' }}
 
   deploy:
     runs-on: windows-latest
+    if: ${{ github.ref == 'refs/heads/main' }}
     needs: build
     environment:
       name: 'production'
