@@ -38,15 +38,18 @@ jobs:
 
     - name: dotnet publish
       run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+      if: ${{ github.ref == 'refs/heads/main' }}
 
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v2
       with:
         name: .net-app
         path: ${{env.DOTNET_ROOT}}/myapp
+      if: ${{ github.ref == 'refs/heads/main' }}
 
   deploy:
     runs-on: windows-latest
+    if: ${{ github.ref == 'refs/heads/main' }}
     needs: build
     environment:
       name: 'production'
