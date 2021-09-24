@@ -14,13 +14,31 @@ const regex = {
     js: /\.js$/
 };
 
+gulp.task("bundle:js", function () {
+    const tasks = getBundles(regex.js).map(function (bundle) {
+        return gulp.src(bundle.inputFiles, { base: "." })
+            .pipe(concat(bundle.outputFileName))
+            .pipe(gulp.dest("."));
+    });
+    return merge(tasks);
+});
+
+gulp.task("bundle:css", function () {
+    const tasks = getBundles(regex.css).map(function (bundle) {
+        return gulp.src(bundle.inputFiles, { base: "." })
+            .pipe(concat(bundle.outputFileName))
+            .pipe(gulp.dest("."));
+    });
+    return merge(tasks);
+});
+
 gulp.task("min:js", function () {
     const tasks = getBundles(regex.js).map(function (bundle) {
         return gulp.src(bundle.inputFiles, { base: "." })
             .pipe(babel({
                 presets: ['@babel/env']
             }))
-            .pipe(concat(bundle.outputFileName))
+            .pipe(concat(bundle.outputFileName.replace(regex.js, ".min.js")))
             .pipe(uglify())
             .pipe(gulp.dest("."));
     });
@@ -30,14 +48,15 @@ gulp.task("min:js", function () {
 gulp.task("min:css", function () {
     const tasks = getBundles(regex.css).map(function (bundle) {
         return gulp.src(bundle.inputFiles, { base: "." })
-            .pipe(concat(bundle.outputFileName))
+            .pipe(concat(bundle.outputFileName.replace(regex.css, ".min.css")))
             .pipe(cssmin())
             .pipe(gulp.dest("."));
     });
     return merge(tasks);
 });
 
-gulp.task("min", gulp.series("min:js", "min:css"));
+gulp.task("bundle", gulp.parallel("bundle:js", "bundle:css"));
+gulp.task("min", gulp.parallel("min:js", "min:css"));
 
 gulp.task("clean", function () {
     const files = bundleconfig.map(function (bundle) {
@@ -55,11 +74,10 @@ gulp.task("watch", function () {
     getBundles(regex.css).forEach(function (bundle) {
         gulp.watch(bundle.inputFiles, ["min:css"]);
     });
-
-    getBundles(regex.html).forEach(function (bundle) {
-        gulp.watch(bundle.inputFiles, ["min:html"]);
-    });
 });
+
+gulp.task("build", gulp.parallel("bundle", "min"));
+gulp.task("default", gulp.series("clean", "build"));
 
 function getBundles(regexPattern) {
     return bundleconfig.filter(function (bundle) {
