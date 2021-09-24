@@ -6,6 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="bundleconfig.json" />
+    <None Include="bundleconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.10" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.10" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.10">
@@ -20,35 +26,8 @@
     <ProjectReference Include="..\EbookArchiver.Data.MySql\EbookArchiver.Data.MySql.csproj" />
   </ItemGroup>
 
-  <Target Name="CustomAfterBuild" AfterTargets="Build">
+  <Target Name="RestoreNpmPackages" BeforeTargets="BundleMinify">
     <Exec Command="npm install" />
-
-    <ItemGroup>
-      <Bootstrap Include="node_modules\bootstrap\dist\**\*.*" />
-      <jQuery Include="node_modules\jquery\dist\**\*.*" />
-      <jQueryValidation Include="node_modules\jquery-validation\dist\**\*.*" />
-      <jQueryValidationUnobtrusive Include="node_modules\jquery-validation-unobtrusive\dist\**\*.*" />
-    </ItemGroup>
-
-    <Copy
-      SourceFiles="@(Bootstrap)"
-      DestinationFiles="@(Bootstrap->'wwwroot\lib\bootstrap\dist\%(RecursiveDir)%(Filename)%(Extension)')"
-    />
-
-    <Copy
-      SourceFiles="@(jQuery)"
-      DestinationFiles="@(jQuery->'wwwroot\lib\jquery\dist\%(RecursiveDir)%(Filename)%(Extension)')"
-    />
-
-    <Copy
-      SourceFiles="@(jQueryValidation)"
-      DestinationFiles="@(jQueryValidation->'wwwroot\lib\jquery-validation\dist\%(RecursiveDir)%(Filename)%(Extension)')"
-    />
-
-    <Copy
-      SourceFiles="@(jQueryValidationUnobtrusive)"
-      DestinationFiles="@(jQueryValidationUnobtrusive->'wwwroot\lib\jquery-validation-unobtrusive\%(RecursiveDir)%(Filename)%(Extension)')"
-    />
   </Target>
 
 </Project>
