@@ -35,7 +35,14 @@ namespace EbookArchiver.Web
                 .AddMvcOptions(options => { })
                 .AddMicrosoftIdentityUI();
 
-            var connection = Configuration.GetValue<string>("MYSQLCONNSTR_localdb");
+            var connection = Configuration.GetConnectionString("localdb");
+            var port = Configuration.GetValue<string>("WEBSITE_MYSQL_PORT");
+            if (port != null)
+            {
+                // Azure App Services do not create a valid connection string. We need to tweak it
+                // and move the port # into a separate key-value pair.
+                connection = connection.Replace(":" + port, string.Empty) + ";Port=" + port;
+            }
             services.AddDbContext<EbookArchiverDbContext>(options =>
                 options.UseMySql(connection,
                     ServerVersion.AutoDetect(connection),
