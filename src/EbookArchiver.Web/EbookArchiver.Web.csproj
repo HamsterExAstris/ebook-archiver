@@ -11,7 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.10" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.10" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.10">
@@ -26,8 +25,14 @@
     <ProjectReference Include="..\EbookArchiver.Data.MySql\EbookArchiver.Data.MySql.csproj" />
   </ItemGroup>
 
-  <Target Name="RestoreNpmPackages" BeforeTargets="BundleMinify">
+  <Target Name="CustomAfterClean" AfterTargets="Clean">
     <Exec Command="npm install" />
+    <Exec Command="npx gulp clean" />
+  </Target>
+
+  <Target Name="CustomAfterBuild" AfterTargets="Build">
+    <Exec Command="npm install" />
+    <Exec Command="npx gulp min" />
   </Target>
 
 </Project>

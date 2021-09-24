@@ -1,4 +1,4 @@
-[
+﻿[
   {
     "outputFileName": "wwwroot/dist/site.css",
     "inputFiles": [
@@ -20,13 +20,14 @@
   {
     "outputFileName": "wwwroot/dist/vendor.js",
     "inputFiles": [
-      "node_modules/jquery/dist/jquery.js",
-      "node_modules/bootstrap/dist/js/bootstrap.bundle.js"
+      "node_modules/@popperjs/core/dist/umd/popper.js",
+      "node_modules/bootstrap/dist/js/bootstrap.min.js"
     ]
   },
   {
     "outputFileName": "wwwroot/dist/vendor-validation.js",
     "inputFiles": [
+      "node_modules/jquery/dist/jquery.js",
       "node_modules/jquery-validation/dist/jquery.validate.js",
       "node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js"
     ]
