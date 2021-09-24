@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -19,5 +19,36 @@
   <ItemGroup>
     <ProjectReference Include="..\EbookArchiver.Data.MySql\EbookArchiver.Data.MySql.csproj" />
   </ItemGroup>
+
+  <Target Name="CustomAfterBuild" AfterTargets="Build">
+    <Exec Command="npm install" />
+
+    <ItemGroup>
+      <Bootstrap Include="node_modules\bootstrap\dist\**\*.*" />
+      <jQuery Include="node_modules\jquery\dist\**\*.*" />
+      <jQueryValidation Include="node_modules\jquery-validation\dist\**\*.*" />
+      <jQueryValidationUnobtrusive Include="node_modules\jquery-validation-unobtrusive\dist\**\*.*" />
+    </ItemGroup>
+
+    <Copy
+      SourceFiles="@(Bootstrap)"
+      DestinationFiles="@(Bootstrap->'wwwroot\lib\bootstrap\dist\%(RecursiveDir)%(Filename)%(Extension)')"
+    />
+
+    <Copy
+      SourceFiles="@(jQuery)"
+      DestinationFiles="@(jQuery->'wwwroot\lib\jquery\dist\%(RecursiveDir)%(Filename)%(Extension)')"
+    />
+
+    <Copy
+      SourceFiles="@(jQueryValidation)"
+      DestinationFiles="@(jQueryValidation->'wwwroot\lib\jquery-validation\dist\%(RecursiveDir)%(Filename)%(Extension)')"
+    />
+
+    <Copy
+      SourceFiles="@(jQueryValidationUnobtrusive)"
+      DestinationFiles="@(jQueryValidationUnobtrusive->'wwwroot\lib\jquery-validation-unobtrusive\%(RecursiveDir)%(Filename)%(Extension)')"
+    />
+  </Target>
 
 </Project>
