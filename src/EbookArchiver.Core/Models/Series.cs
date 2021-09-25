@@ -1,11 +1,11 @@
 ﻿namespace EbookArchiver.Models
 {
     /// <summary>
-    /// Information about an acount.
+    /// Information about a series.
     /// </summary>
-    public class Account
+    public class Series
     {
-        public int AccountId { get; set; }
+        public int SeriesId { get; set; }
 
         public string DisplayName { get; set; } = string.Empty;
 
