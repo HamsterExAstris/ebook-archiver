@@ -15,7 +15,7 @@ namespace EbookArchiver.Web.Pages.Series
         }
 
         [BindProperty]
-        public EbookArchiver.Models.Series Series { get; set; } = new();
+        public EbookArchiver.Models.Series? Series { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {

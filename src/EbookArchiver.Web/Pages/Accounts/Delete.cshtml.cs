@@ -16,7 +16,7 @@ namespace EbookArchiver.Web.Pages.Accounts
         }
 
         [BindProperty]
-        public Account Account { get; set; } = new();
+        public Account? Account { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {

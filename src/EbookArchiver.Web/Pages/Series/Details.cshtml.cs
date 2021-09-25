@@ -14,7 +14,7 @@ namespace EbookArchiver.Web.Pages.Series
             _context = context;
         }
 
-        public EbookArchiver.Models.Series Series { get; set; } = new();
+        public EbookArchiver.Models.Series? Series { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {

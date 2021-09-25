@@ -16,7 +16,7 @@ namespace EbookArchiver.Web.Pages.Accounts
         }
 
         [BindProperty]
-        public Account Account { get; set; } = new();
+        public Account? Account { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -54,11 +54,6 @@ namespace EbookArchiver.Web.Pages.Accounts
             }
 
             return Page();
-        }
-
-        private bool AccountExists(int id)
-        {
-            return _context.Accounts.Any(e => e.AccountId == id);
         }
     }
 }

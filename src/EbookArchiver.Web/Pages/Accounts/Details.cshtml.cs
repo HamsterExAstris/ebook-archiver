@@ -15,7 +15,7 @@ namespace EbookArchiver.Web.Pages.Accounts
             _context = context;
         }
 
-        public Account Account { get; set; } = new();
+        public Account? Account { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {

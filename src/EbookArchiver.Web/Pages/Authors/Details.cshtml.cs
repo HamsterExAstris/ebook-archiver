@@ -15,7 +15,7 @@ namespace EbookArchiver.Web.Pages.Authors
             _context = context;
         }
 
-        public Author Author { get; set; } = new();
+        public Author? Author { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
