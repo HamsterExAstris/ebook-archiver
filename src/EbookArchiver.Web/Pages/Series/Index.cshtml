@@ -1,0 +1,36 @@
+﻿@page
+@model EbookArchiver.Web.Pages.Series.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Series[0].DisplayName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Series) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DisplayName)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.SeriesId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.SeriesId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.SeriesId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
