@@ -1,0 +1,85 @@
+﻿@page
+@model EbookArchiver.Web.Pages.Ebooks.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Ebook</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ebook!.Account)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ebook!.Account!.DisplayName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ebook!.Book)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ebook!.Book!.Title)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ebook!.DrmStrippedFileName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ebook!.DrmStrippedFileName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ebook!.EbookFormat)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ebook!.EbookFormat)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ebook!.EbookSource)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ebook!.EbookSource)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ebook!.FileName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ebook!.FileName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ebook!.Folder)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ebook!.Folder)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ebook!.PublisherISBN13)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ebook!.PublisherISBN13)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ebook!.PublisherVersion)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ebook!.PublisherVersion)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ebook!.VendorBookIdentifier)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ebook!.VendorBookIdentifier)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ebook!.VendorVersion)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ebook!.VendorVersion)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Ebook!.EbookId">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

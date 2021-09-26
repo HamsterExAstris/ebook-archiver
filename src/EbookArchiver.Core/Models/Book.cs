@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text;
 
 namespace EbookArchiver.Models
 {
@@ -14,14 +15,18 @@ namespace EbookArchiver.Models
         /// </summary>
         public string Title { get; set; } = string.Empty;
 
-        public int? AuthorId { get; set; }
+        [Display(Name = "Author(s)")]
+        public int AuthorId { get; set; }
 
         public Author? Author { get; set; }
 
+        [Display(Name = "Is this book stolen?")]
         public bool IsNotOwned { get; set; }
 
+        [Display(Name = "Series")]
         public int? SeriesId { get; set; }
 
+        [Display(Name = "Series Index")]
         public string? SeriesIndex { get; set; }
 
         public Series? Series { get; set; }
@@ -29,22 +34,22 @@ namespace EbookArchiver.Models
         public override string ToString()
         {
             var result = new StringBuilder();
-            if (this.Author != null)
+            if (Author != null)
             {
-                result.Append(this.Author.DisplayName);
+                result.Append(Author.DisplayName);
                 result.Append(" - ");
             }
-            if (this.Series != null)
+            if (Series != null)
             {
-                result.Append(this.Series.DisplayName);
-                if (!string.IsNullOrWhiteSpace(this.SeriesIndex))
+                result.Append(Series.DisplayName);
+                if (!string.IsNullOrWhiteSpace(SeriesIndex))
                 {
                     result.Append(" #");
-                    result.Append(this.SeriesIndex);
+                    result.Append(SeriesIndex);
                 }
                 result.Append(" - ");
             }
-            result.Append(this.Title);
+            result.Append(Title);
             return result.ToString();
         }
     }
