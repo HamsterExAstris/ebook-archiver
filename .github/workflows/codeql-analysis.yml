@@ -53,8 +53,9 @@ jobs:
 
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
-    #- name: Autobuild
-    #  uses: github/codeql-action/autobuild@v1
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v1
+      if: ${{ matrix.language != 'csharp' }}
 
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 https://git.io/JvXDl
@@ -72,9 +73,16 @@ jobs:
       with:
         dotnet-version: '6.0.x'
         include-prerelease: true
+      if: ${{ matrix.language == 'csharp' }}
 
-    - name: Build with dotnet
-      run: dotnet build --configuration Release
+    - run: dotnet clean
+      if: ${{ matrix.language == 'csharp' }}
+
+    - run: dotnet restore
+      if: ${{ matrix.language == 'csharp' }}
+
+    - run: dotnet build --configuration Release --no-incremental /p:UseSharedCompilation=false
+      if: ${{ matrix.language == 'csharp' }}
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
