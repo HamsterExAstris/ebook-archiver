@@ -8,6 +8,7 @@ namespace EbookArchiver.Models
     /// </summary>
     public class Book
     {
+        [Display(Name = "Book")]
         public int BookId { get; set; }
 
         /// <summary>
