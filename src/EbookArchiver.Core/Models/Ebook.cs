@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace EbookArchiver.Models
@@ -8,6 +8,7 @@ namespace EbookArchiver.Models
     /// </summary>
     public class Ebook
     {
+        [Display(Name = "Book")]
         public int EbookId { get; set; }
 
         public Account? Account { get; set; }
@@ -17,56 +18,63 @@ namespace EbookArchiver.Models
         /// </summary>
         public int? AccountId { get; set; }
 
-        public Book? Book { get; set; }
+        public Book Book { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the foreign key to this ebook's <see cref="Book"/>.
         /// </summary>
-        public int BookId { get; private set; }
+        public int BookId { get; set; }
 
         /// <summary>
         /// Gets or sets the file name of the de-DRMed e-book file.
         /// </summary>
+        [Display(Name = "DRM-Free File")]
         public string? DrmStrippedFileName { get; set; }
 
+        [Display(Name = "Format")]
         public EbookFormat EbookFormat { get; set; }
 
+        public string? DrmStrippedFileId { get; set; }
+
+        public string? EbookFileId { get; set; }
+
+        [Display(Name = "Source")]
         public EbookSource EbookSource { get; set; }
 
         /// <summary>
         /// Gets or sets the file name of the e-book file.
         /// </summary>
+        [Display(Name = "Original File")]
         public string? FileName { get; set; }
 
-        // This GUID may be trashed later, but it's simpler to make it
-        // assigned now rather than deal with the pain of making it
-        // nullable.
-        public Guid Folder { get; set; } = Guid.NewGuid();
-
+        [Display(Name = "Ebook ISBN-13")]
         public string? PublisherISBN13 { get; set; }
 
         /// <summary>
         /// Gets or sets the version string provided by the publisher, if any.
         /// </summary>
+        [Display(Name = "Publisher Version")]
         public string? PublisherVersion { get; set; }
 
+        [Display(Name = "Vendor Book Identifier")]
         public string? VendorBookIdentifier { get; set; }
 
         /// <summary>
         /// Gets or sets the version string provided by the vendor, if any.
         /// </summary>
+        [Display(Name = "VendorVersion")]
         public string? VendorVersion { get; set; }
 
         public override string ToString()
         {
-            var result = new StringBuilder(this.EbookFormat.ToString());
-            if (string.IsNullOrWhiteSpace(this.DrmStrippedFileName))
+            var result = new StringBuilder(EbookFormat.ToString());
+            if (string.IsNullOrWhiteSpace(DrmStrippedFileName))
             {
-                if (this.Account != null)
+                if (Account != null)
                 {
                     result.Append(" (");
-                    result.Append(this.Account.DisplayName);
-                    result.Append(")");
+                    result.Append(Account.DisplayName);
+                    result.Append(')');
                 }
                 else
                 {
@@ -77,8 +85,8 @@ namespace EbookArchiver.Models
             {
                 result.Append(" (de-DRMed)");
             }
-            result.Append(" ");
-            result.Append(this.FileName);
+            result.Append(' ');
+            result.Append(FileName);
             return result.ToString();
         }
     }

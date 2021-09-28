@@ -1,0 +1,90 @@
+﻿@page
+@model EbookArchiver.Web.Pages.Ebooks.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Ebook[0].Account)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ebook[0].Book)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ebook[0].DrmStrippedFileName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ebook[0].EbookFormat)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ebook[0].EbookSource)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ebook[0].FileName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ebook[0].PublisherISBN13)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ebook[0].PublisherVersion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ebook[0].VendorBookIdentifier)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ebook[0].VendorVersion)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Ebook) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Account!.DisplayName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Book!.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DrmStrippedFileName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EbookFormat)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EbookSource)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FileName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PublisherISBN13)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PublisherVersion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VendorBookIdentifier)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VendorVersion)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.EbookId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.EbookId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.EbookId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

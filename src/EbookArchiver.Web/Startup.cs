@@ -1,4 +1,5 @@
 using EbookArchiver.Data.MySql;
+using EbookArchiver.OneDrive;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,10 +14,7 @@ namespace EbookArchiver.Web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        public Startup(IConfiguration configuration) => Configuration = configuration;
 
         public IConfiguration Configuration { get; }
 
@@ -24,7 +22,24 @@ namespace EbookArchiver.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-                .AddMicrosoftIdentityWebApp(Configuration.GetSection("AzureAd"));
+                .AddMicrosoftIdentityWebApp(Configuration.GetSection("AzureAd"))
+                // Add ability to call web API (Graph) and get access tokens.
+                // Unsure what the scope binding here is for, it doesn't seem to actually work.
+                // The specific pages still need to specify their required scopes.
+                // https://github.com/AzureAD/microsoft-identity-web/wiki/Managing-incremental-consent-and-conditional-access
+                .EnableTokenAcquisitionToCallDownstreamApi(options =>
+                    {
+                        Configuration.Bind("AzureAd", options);
+                    },
+                    GraphConstants.DefaultScopes)
+                .AddMicrosoftGraph(options =>
+                    {
+                        options.Scopes = string.Join(' ', GraphConstants.DefaultScopes);
+                    }
+                )
+                // Use in-memory token cache
+                // See https://github.com/AzureAD/microsoft-identity-web/wiki/token-cache-serialization
+                .AddInMemoryTokenCaches();
 
             services.AddAuthorization(options =>
             {
@@ -35,8 +50,8 @@ namespace EbookArchiver.Web
                 .AddMvcOptions(options => { })
                 .AddMicrosoftIdentityUI();
 
-            var connection = Configuration.GetConnectionString("localdb");
-            var port = Configuration.GetValue<string>("WEBSITE_MYSQL_PORT");
+            string? connection = Configuration.GetConnectionString("localdb");
+            string? port = Configuration.GetValue<string>("WEBSITE_MYSQL_PORT");
             if (port != null)
             {
                 // Azure App Services do not create a valid connection string. We need to tweak it
@@ -49,6 +64,10 @@ namespace EbookArchiver.Web
                     b => b.MigrationsAssembly("EbookArchiver.Data.MySql")
                 )
             );
+
+            // Eventually we'll want to use Lamar, but it doesn't support .NET 6 yet.
+            services.AddScoped<BookService>();
+            services.AddScoped<IGraphServiceClientFactory, WebGraphServiceClientFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

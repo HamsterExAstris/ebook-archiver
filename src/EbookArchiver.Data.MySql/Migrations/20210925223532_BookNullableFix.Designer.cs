@@ -3,14 +3,16 @@ using System;
 using EbookArchiver.Data.MySql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EbookArchiver.Data.MySql.Migrations
 {
     [DbContext(typeof(EbookArchiverDbContext))]
-    partial class EbookArchiverDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210925223532_BookNullableFix")]
+    partial class BookNullableFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,9 +44,6 @@ namespace EbookArchiver.Data.MySql.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("FolderId")
-                        .HasColumnType("longtext");
-
                     b.HasKey("AuthorId");
 
                     b.ToTable("Authors");
@@ -59,13 +58,10 @@ namespace EbookArchiver.Data.MySql.Migrations
                     b.Property<int>("AuthorId")
                         .HasColumnType("int");
 
-                    b.Property<string>("FolderId")
-                        .HasColumnType("longtext");
-
                     b.Property<bool>("IsNotOwned")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int?>("SeriesId")
+                    b.Property<int>("SeriesId")
                         .HasColumnType("int");
 
                     b.Property<string>("SeriesIndex")
@@ -96,13 +92,7 @@ namespace EbookArchiver.Data.MySql.Migrations
                     b.Property<int>("BookId")
                         .HasColumnType("int");
 
-                    b.Property<string>("DrmStrippedFileId")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("DrmStrippedFileName")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("EbookFileId")
                         .HasColumnType("longtext");
 
                     b.Property<int>("EbookFormat")
@@ -113,6 +103,9 @@ namespace EbookArchiver.Data.MySql.Migrations
 
                     b.Property<string>("FileName")
                         .HasColumnType("longtext");
+
+                    b.Property<Guid>("Folder")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("PublisherISBN13")
                         .HasColumnType("longtext");
@@ -160,7 +153,9 @@ namespace EbookArchiver.Data.MySql.Migrations
 
                     b.HasOne("EbookArchiver.Models.Series", "Series")
                         .WithMany()
-                        .HasForeignKey("SeriesId");
+                        .HasForeignKey("SeriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Author");
 
