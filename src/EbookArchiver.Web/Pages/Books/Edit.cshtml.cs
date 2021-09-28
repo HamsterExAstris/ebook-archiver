@@ -2,18 +2,27 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using EbookArchiver.Models;
+using EbookArchiver.OneDrive;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Web;
 
 namespace EbookArchiver.Web.Pages.Books
 {
+    [AuthorizeForScopes(Scopes = new[] { GraphConstants.FilesReadWriteAppFolder })]
     public class EditModel : PageModel
     {
+        private readonly BookService _bookService;
         private readonly EbookArchiver.Data.MySql.EbookArchiverDbContext _context;
 
-        public EditModel(EbookArchiver.Data.MySql.EbookArchiverDbContext context) => _context = context;
+        public EditModel(BookService bookService,
+            EbookArchiver.Data.MySql.EbookArchiverDbContext context)
+        {
+            _bookService = bookService;
+            _context = context;
+        }
 
         [BindProperty]
         public Book? Book { get; set; }
@@ -46,6 +55,7 @@ namespace EbookArchiver.Web.Pages.Books
 
         public async Task<IActionResult> OnPostAsync(int id)
         {
+            // Read in the book. The author may have changed so we'll read the data for OneDrive separately.
             Book? modelToUpdate = await _context.Books.FindAsync(id);
 
             if (modelToUpdate == null)
@@ -63,6 +73,18 @@ namespace EbookArchiver.Web.Pages.Books
                     b => b.SeriesId!,
                     b => b.SeriesIndex!))
             {
+                // Get the information on the author that OneDrive will need.
+                Author? author = await _context.Authors.FindAsync(modelToUpdate.AuthorId);
+                if (author == null)
+                {
+                    throw new InvalidOperationException("AuthorId " + modelToUpdate.AuthorId + " not found.");
+                }
+                modelToUpdate.Author = author;
+
+                // Move the folder in OneDrive if applicable.
+                await _bookService.UpdateBookPathAsync(modelToUpdate);
+
+                // Update the database.
                 await _context.SaveChangesAsync();
                 return RedirectToPage("./Index");
             }

@@ -46,6 +46,14 @@ namespace EbookArchiver.Web.Pages.Books
                 )
             )
             {
+                // Get the information on the author that OneDrive will need.
+                Author? author = await _context.Authors.FindAsync(emptyModel.AuthorId);
+                if (author == null)
+                {
+                    throw new InvalidOperationException("AuthorId " + emptyModel.AuthorId + " not found.");
+                }
+                emptyModel.Author = author;
+
                 _context.Books.Add(emptyModel);
                 await _context.SaveChangesAsync();
 

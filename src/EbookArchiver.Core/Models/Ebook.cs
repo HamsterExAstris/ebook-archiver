@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace EbookArchiver.Models
@@ -19,7 +18,7 @@ namespace EbookArchiver.Models
         /// </summary>
         public int? AccountId { get; set; }
 
-        public Book? Book { get; set; }
+        public Book Book { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the foreign key to this ebook's <see cref="Book"/>.
@@ -35,6 +34,10 @@ namespace EbookArchiver.Models
         [Display(Name = "Format")]
         public EbookFormat EbookFormat { get; set; }
 
+        public string? DrmStrippedFileId { get; set; }
+
+        public string? EbookFileId { get; set; }
+
         [Display(Name = "Source")]
         public EbookSource EbookSource { get; set; }
 
@@ -43,11 +46,6 @@ namespace EbookArchiver.Models
         /// </summary>
         [Display(Name = "Original File")]
         public string? FileName { get; set; }
-
-        // This GUID may be trashed later, but it's simpler to make it
-        // assigned now rather than deal with the pain of making it
-        // nullable.
-        public Guid Folder { get; set; } = Guid.NewGuid();
 
         [Display(Name = "Ebook ISBN-13")]
         public string? PublisherISBN13 { get; set; }

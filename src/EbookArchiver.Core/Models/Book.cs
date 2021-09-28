@@ -31,6 +31,8 @@ namespace EbookArchiver.Models
 
         public Series? Series { get; set; }
 
+        public string? FolderId { get; set; }
+
         public override string ToString()
         {
             var result = new StringBuilder();

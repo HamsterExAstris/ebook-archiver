@@ -11,43 +11,13 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Ebook!.EbookId" />
-            <div class="mb-3">
-                <label asp-for="Ebook!.AccountId" class="form-label"></label>
-                <select asp-for="Ebook!.AccountId" class="form-control" asp-items="Model.AccountId"></select>
-                <span asp-validation-for="Ebook!.AccountId" class="text-danger"></span>
-            </div>
             <div class="mb-3">
                 <label asp-for="Ebook!.BookId" class="form-label"></label>
                 <select asp-for="Ebook!.BookId" class="form-control" asp-items="Model.BookId"></select>
                 <span asp-validation-for="Ebook!.BookId" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Ebook!.DrmStrippedFileName" class="form-label"></label>
-                <input asp-for="Ebook!.DrmStrippedFileName" class="form-control" />
-                <span asp-validation-for="Ebook!.DrmStrippedFileName" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Ebook!.EbookFormat" class="form-label"></label>
-                <input asp-for="Ebook!.EbookFormat" class="form-control" />
-                <span asp-validation-for="Ebook!.EbookFormat" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Ebook!.EbookSource" class="form-label"></label>
-                <input asp-for="Ebook!.EbookSource" class="form-control" />
-                <span asp-validation-for="Ebook!.EbookSource" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Ebook!.FileName" class="form-label"></label>
-                <input asp-for="Ebook!.FileName" class="form-control" />
-                <span asp-validation-for="Ebook!.FileName" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Ebook!.Folder" class="form-label"></label>
-                <input asp-for="Ebook!.Folder" class="form-control" />
-                <span asp-validation-for="Ebook!.Folder" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="Ebook!.PublisherISBN13" class="form-label"></label>
@@ -60,14 +30,39 @@
                 <span asp-validation-for="Ebook!.PublisherVersion" class="text-danger"></span>
             </div>
             <div class="mb-3">
+                <label asp-for="Ebook!.VendorVersion" class="form-label"></label>
+                <input asp-for="Ebook!.VendorVersion" class="form-control" />
+                <span asp-validation-for="Ebook!.VendorVersion" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
                 <label asp-for="Ebook!.VendorBookIdentifier" class="form-label"></label>
                 <input asp-for="Ebook!.VendorBookIdentifier" class="form-control" />
                 <span asp-validation-for="Ebook!.VendorBookIdentifier" class="text-danger"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="Ebook!.VendorVersion" class="form-label"></label>
-                <input asp-for="Ebook!.VendorVersion" class="form-control" />
-                <span asp-validation-for="Ebook!.VendorVersion" class="text-danger"></span>
+                <label asp-for="Ebook!.AccountId" class="form-label"></label>
+                <select asp-for="Ebook!.AccountId" class="form-control" asp-items="Model.AccountId"></select>
+                <span asp-validation-for="Ebook!.AccountId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Ebook!.EbookSource" class="form-label"></label>
+                <input asp-for="Ebook!.EbookSource" class="form-control" />
+                <span asp-validation-for="Ebook!.EbookSource" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Ebook!.EbookFormat" class="form-label"></label>
+                <input asp-for="Ebook!.EbookFormat" class="form-control" />
+                <span asp-validation-for="Ebook!.EbookFormat" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="DrmStrippedFile" class="form-label"></label>
+                <input asp-for="DrmStrippedFile" class="form-control" type="file" />
+                <span asp-validation-for="DrmStrippedFile" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="OriginalFile" class="form-label"></label>
+                <input asp-for="OriginalFile" class="form-control" type="file" />
+                <span asp-validation-for="OriginalFile" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <input type="submit" value="Save" class="btn btn-primary" />

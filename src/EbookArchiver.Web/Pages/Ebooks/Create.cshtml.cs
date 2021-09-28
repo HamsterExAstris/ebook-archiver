@@ -1,20 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Threading.Tasks;
 using EbookArchiver.Models;
+using EbookArchiver.OneDrive;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Web;
 
 namespace EbookArchiver.Web.Pages.Ebooks
 {
+    [AuthorizeForScopes(Scopes = new[] { GraphConstants.FilesReadWriteAppFolder })]
     public class CreateModel : PageModel
     {
+        private readonly BookService _bookService;
         private readonly EbookArchiver.Data.MySql.EbookArchiverDbContext _context;
 
-        public CreateModel(EbookArchiver.Data.MySql.EbookArchiverDbContext context) => _context = context;
+        public CreateModel(BookService bookService,
+            EbookArchiver.Data.MySql.EbookArchiverDbContext context)
+        {
+            _bookService = bookService;
+            _context = context;
+        }
 
         public IActionResult OnGet()
         {
@@ -57,6 +68,47 @@ namespace EbookArchiver.Web.Pages.Ebooks
                 )
             )
             {
+                if (OriginalFile != null)
+                {
+                    emptyModel.FileName = Path.GetFileName(OriginalFile.FileName);
+                }
+
+                if (DrmStrippedFile != null)
+                {
+                    emptyModel.DrmStrippedFileName = Path.GetFileName(DrmStrippedFile.FileName);
+                }
+
+                // Get the information on the book that OneDrive will need.
+                Book? book = await _context.Books
+                    .Include(b => b.Author)
+                    .FirstOrDefaultAsync(b => b.BookId == emptyModel.BookId);
+                if (book == null)
+                {
+                    throw new InvalidOperationException("BookId " + emptyModel.BookId + " not found in database.");
+                }
+                emptyModel.Book = book;
+
+                // Upload the files to OneDrive.
+                if (OriginalFile != null)
+                {
+                    using Stream originalStream = OriginalFile.OpenReadStream();
+                    if (DrmStrippedFile != null)
+                    {
+                        using Stream drmStrippedStream = DrmStrippedFile.OpenReadStream();
+                        await _bookService.UploadEbookAsync(emptyModel, originalStream, drmStrippedStream);
+                    }
+                    else
+                    {
+                        await _bookService.UploadEbookAsync(emptyModel, originalStream, null);
+                    }
+                }
+                else if (DrmStrippedFile != null)
+                {
+                    using Stream drmStrippedStream = DrmStrippedFile.OpenReadStream();
+                    await _bookService.UploadEbookAsync(emptyModel, null, drmStrippedStream);
+                }
+
+                // Write the changes to the database.
                 _context.Ebooks.Add(emptyModel);
                 await _context.SaveChangesAsync();
 

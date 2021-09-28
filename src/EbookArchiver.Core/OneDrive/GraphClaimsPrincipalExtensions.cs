@@ -38,9 +38,7 @@ namespace EbookArchiver
 
         public static void AddUserGraphInfo(this ClaimsPrincipal claimsPrincipal, User user)
         {
-            var identity = claimsPrincipal.Identity as ClaimsIdentity;
-
-            if (identity != null)
+            if (claimsPrincipal.Identity is ClaimsIdentity identity)
             {
                 identity.AddClaim(
                     new Claim(GraphClaimTypes.DisplayName, user.DisplayName));

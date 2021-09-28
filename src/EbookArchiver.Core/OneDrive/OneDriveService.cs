@@ -17,7 +17,7 @@ namespace EbookArchiver.OneDrive
 
         // Gets a Graph client configured with
         // the specified scopes
-        public GraphServiceClient GetGraphClientForScopes(string[] scopes) =>
+        public GraphServiceClient GetGraphClientForScopes(params string[] scopes) =>
             GetAuthenticatedGraphClient(async () =>
                 {
                     string? token = await _tokenAcquisition
@@ -34,7 +34,7 @@ namespace EbookArchiver.OneDrive
 
         // If the Graph client is unable to get a token for the
         // requested scopes, it throws this type of exception.
-        public void InvokeAuthIfNeeded(ServiceException serviceException)
+        public static void InvokeAuthIfNeeded(ServiceException serviceException)
         {
             // Check if this failed because interactive auth is needed
             if (serviceException.InnerException is MicrosoftIdentityWebChallengeUserException)
@@ -47,7 +47,7 @@ namespace EbookArchiver.OneDrive
         }
 
         // Uses a page iterator to get all objects in a collection
-        public async Task<List<T>> GetAllPages<T>(
+        public static async Task<List<T>> GetAllPages<T>(
             GraphServiceClient graphClient,
             ICollectionPage<T> page)
         {
@@ -73,7 +73,7 @@ namespace EbookArchiver.OneDrive
         // in a collection and cast them to a specific type
         // Will exclude any objects that cannot be case to the
         // requested type
-        public async Task<List<T>> GetAllPagesAsType<T>(
+        public static async Task<List<T>> GetAllPagesAsType<T>(
             GraphServiceClient graphClient,
             ICollectionPage<DirectoryObject> page) where T : class
         {
@@ -101,7 +101,7 @@ namespace EbookArchiver.OneDrive
         }
 
         private static GraphServiceClient GetAuthenticatedGraphClient(
-            Func<Task<string>> acquireAccessToken) => new GraphServiceClient(
+            Func<Task<string>> acquireAccessToken) => new(
                 new CustomAuthenticationProvider(acquireAccessToken)
             );
 

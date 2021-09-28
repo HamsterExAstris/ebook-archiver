@@ -1,23 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Threading.Tasks;
 using EbookArchiver.Models;
+using EbookArchiver.OneDrive;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Web;
 
 namespace EbookArchiver.Web.Pages.Ebooks
 {
+    [AuthorizeForScopes(Scopes = new[] { GraphConstants.FilesReadWriteAppFolder })]
     public class EditModel : PageModel
     {
+        private readonly BookService _bookService;
         private readonly EbookArchiver.Data.MySql.EbookArchiverDbContext _context;
 
-        public EditModel(EbookArchiver.Data.MySql.EbookArchiverDbContext context) => _context = context;
+        public EditModel(BookService bookService,
+            EbookArchiver.Data.MySql.EbookArchiverDbContext context)
+        {
+            _bookService = bookService;
+            _context = context;
+        }
 
         [BindProperty]
         public Ebook? Ebook { get; set; }
+
+        [BindProperty]
+        [Display(Name = "DRM-Free File")]
+        public IFormFile? DrmStrippedFile { get; set; }
+
+        [BindProperty]
+        [Display(Name = "Original File")]
+        public IFormFile? OriginalFile { get; set; }
 
         public IEnumerable<SelectListItem> AccountId { get; set; } = Array.Empty<SelectListItem>();
 
@@ -43,41 +62,77 @@ namespace EbookArchiver.Web.Pages.Ebooks
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(int? id)
         {
-            if (!ModelState.IsValid)
+            // Read in the book. BookId can change so we'll populate data later.
+            Ebook? modelToUpdate = await _context.Ebooks.FindAsync(id);
+
+            if (modelToUpdate == null)
             {
-                return Page();
+                return NotFound();
             }
 
-            if (Ebook == null)
+            if (ModelState.IsValid
+                && await TryUpdateModelAsync(
+                    modelToUpdate,
+                    nameof(Ebook),
+                    b => b.BookId,
+                    b => b.PublisherISBN13!,
+                    b => b.PublisherVersion!,
+                    b => b.VendorVersion!,
+                    b => b.VendorBookIdentifier!,
+                    b => b.AccountId!,
+                    b => b.EbookSource,
+                    b => b.EbookFormat
+                )
+            )
             {
-                throw new InvalidOperationException(nameof(Ebook) + " must be populated before POST.");
-            }
+                if (OriginalFile != null)
+                {
+                    modelToUpdate.FileName = Path.GetFileName(OriginalFile.FileName);
+                }
 
-            _context.Attach(Ebook).State = EntityState.Modified;
+                if (DrmStrippedFile != null)
+                {
+                    modelToUpdate.DrmStrippedFileName = Path.GetFileName(DrmStrippedFile.FileName);
+                }
 
-            try
-            {
+                // Get the information on the book that OneDrive will need.
+                Book? book = await _context.Books
+                    .Include(b => b.Author)
+                    .FirstOrDefaultAsync(b => b.BookId == modelToUpdate.BookId);
+                if (book == null)
+                {
+                    throw new InvalidOperationException("BookId " + modelToUpdate.BookId + " not found in database.");
+                }
+                modelToUpdate.Book = book;
+
+                // Upload the files to OneDrive.
+                if (OriginalFile != null)
+                {
+                    using Stream originalStream = OriginalFile.OpenReadStream();
+                    if (DrmStrippedFile != null)
+                    {
+                        using Stream drmStrippedStream = DrmStrippedFile.OpenReadStream();
+                        await _bookService.UploadEbookAsync(modelToUpdate, originalStream, drmStrippedStream);
+                    }
+                    else
+                    {
+                        await _bookService.UploadEbookAsync(modelToUpdate, originalStream, null);
+                    }
+                }
+                else if (DrmStrippedFile != null)
+                {
+                    using Stream drmStrippedStream = DrmStrippedFile.OpenReadStream();
+                    await _bookService.UploadEbookAsync(modelToUpdate, null, drmStrippedStream);
+                }
+
+                // Update the database.
                 await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EbookExists(Ebook.EbookId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return RedirectToPage("./Index");
             }
 
-            return RedirectToPage("./Index");
+            return Page();
         }
-
-        private bool EbookExists(int id) => _context.Ebooks.Any(e => e.EbookId == id);
     }
 }

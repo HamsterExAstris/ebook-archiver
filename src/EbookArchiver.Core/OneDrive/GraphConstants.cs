@@ -22,24 +22,6 @@
         // Files
         public const string FilesReadWriteAppFolder = "Files.ReadWrite.AppFolder";
 
-        // Group
-        public const string GroupReadWriteAll = "Group.ReadWrite.All";
-
-        // Mailbox settings
-        public const string MailboxSettingsRead = "MailboxSettings.Read";
-
-        // Mail
-        public const string MailRead = "Mail.Read";
-        public const string MailReadWrite = "Mail.ReadWrite";
-        public const string MailSend = "Mail.Send";
-
-        // Calendar
-        public const string CalendarReadWrite = "Calendars.ReadWrite";
-
-        // Files
-        public const string FilesReadWrite = "Files.ReadWrite";
-        public const string FilesReadWriteAll = "Files.ReadWrite.All";
-
         // Errors
         public const string ItemNotFound = "ErrorItemNotFound";
         public const string RequestDenied = "Authorization_RequestDenied";

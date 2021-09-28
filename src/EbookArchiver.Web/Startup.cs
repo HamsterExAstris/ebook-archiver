@@ -65,7 +65,8 @@ namespace EbookArchiver.Web
                 )
             );
 
-            // TODO: Use Lamar so we don't need to register our custom services manually.
+            // Eventually we'll want to use Lamar, but it doesn't support .NET 6 yet.
+            services.AddScoped<BookService>();
             services.AddScoped<OneDriveService>();
         }
 
