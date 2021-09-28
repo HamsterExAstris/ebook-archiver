@@ -9,13 +9,13 @@ namespace EbookArchiver.OneDrive
 {
     public class BookService
     {
-        private readonly OneDriveService _oneDriveService;
+        private readonly IGraphServiceClientFactory _graphServiceClientFactory;
 
-        public BookService(OneDriveService oneDriveService) => _oneDriveService = oneDriveService;
+        public BookService(IGraphServiceClientFactory graphServiceClientFactory) => _graphServiceClientFactory = graphServiceClientFactory;
 
         public async Task UpdateAuthorPathAsync(Author author)
         {
-            GraphServiceClient? graphClient = _oneDriveService.GetGraphClientForScopes(GraphConstants.FilesReadWriteAppFolder);
+            GraphServiceClient? graphClient = _graphServiceClientFactory.GetGraphClientForScopes(GraphConstants.FilesReadWriteAppFolder);
 
             // Create or rename the folder for the author.
             if (author.FolderId == null)
@@ -56,7 +56,7 @@ namespace EbookArchiver.OneDrive
 
         public async Task UpdateBookPathAsync(Book book, bool createFolder = false)
         {
-            GraphServiceClient? graphClient = _oneDriveService.GetGraphClientForScopes(GraphConstants.FilesReadWriteAppFolder);
+            GraphServiceClient? graphClient = _graphServiceClientFactory.GetGraphClientForScopes(GraphConstants.FilesReadWriteAppFolder);
 
             // Create or update the folder for the author.
             if (book.Author == null)
@@ -137,7 +137,7 @@ namespace EbookArchiver.OneDrive
 
         private async Task<string> PutFileAsync(string? folderId, string? fileName, Stream fileContents)
         {
-            GraphServiceClient? graphClient = _oneDriveService.GetGraphClientForScopes(GraphConstants.FilesReadWriteAppFolder);
+            GraphServiceClient? graphClient = _graphServiceClientFactory.GetGraphClientForScopes(GraphConstants.FilesReadWriteAppFolder);
 
             // Use properties to specify the conflict behavior
             // in this case, replace

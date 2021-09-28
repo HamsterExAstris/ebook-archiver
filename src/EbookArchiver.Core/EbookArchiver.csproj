@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Graph" Version="4.6.0" />
-    <PackageReference Include="Microsoft.Identity.Web" Version="1.17.0" />
   </ItemGroup>
 
 </Project>
