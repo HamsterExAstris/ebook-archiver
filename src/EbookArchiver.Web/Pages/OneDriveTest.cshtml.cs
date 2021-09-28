@@ -8,9 +8,9 @@ namespace EbookArchiver.Web.Pages
     [AuthorizeForScopes(Scopes = new[] { GraphConstants.FilesReadWriteAppFolder })]
     public class OneDriveTestModel : PageModel
     {
-        private readonly OneDriveService _oneDriveService;
+        private readonly WebGraphServiceClientFactory _oneDriveService;
 
-        public OneDriveTestModel(OneDriveService oneDriveService) => _oneDriveService = oneDriveService;
+        public OneDriveTestModel(IGraphServiceClientFactory oneDriveService) => _oneDriveService = (WebGraphServiceClientFactory)oneDriveService;
 
         public FilesViewDisplayModel Files { get; set; } = new();
 

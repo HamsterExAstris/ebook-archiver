@@ -8,11 +8,11 @@ using Microsoft.Identity.Web;
 
 namespace EbookArchiver.OneDrive
 {
-    public class OneDriveService
+    public class WebGraphServiceClientFactory : IGraphServiceClientFactory
     {
         protected readonly ITokenAcquisition _tokenAcquisition;
 
-        public OneDriveService(
+        public WebGraphServiceClientFactory(
             ITokenAcquisition tokenAcquisition) => _tokenAcquisition = tokenAcquisition;
 
         // Gets a Graph client configured with

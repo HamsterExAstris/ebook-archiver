@@ -67,7 +67,7 @@ namespace EbookArchiver.Web
 
             // Eventually we'll want to use Lamar, but it doesn't support .NET 6 yet.
             services.AddScoped<BookService>();
-            services.AddScoped<OneDriveService>();
+            services.AddScoped<IGraphServiceClientFactory, WebGraphServiceClientFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
