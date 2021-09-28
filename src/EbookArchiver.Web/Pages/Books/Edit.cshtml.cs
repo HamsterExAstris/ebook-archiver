@@ -47,6 +47,10 @@ namespace EbookArchiver.Web.Pages.Books
             {
                 return NotFound();
             }
+
+            // Initialize the connection to OneDrive so a save doesn't fail.
+            await _bookService.InitiializeAccessAsync();
+
             AuthorId = new SelectList(_context.Authors.OrderBy(a => a.DisplayName), nameof(Author.AuthorId), nameof(Author.DisplayName));
             SeriesId = new SelectList(_context.Series.OrderBy(a => a.DisplayName),
                 nameof(EbookArchiver.Models.Series.SeriesId),

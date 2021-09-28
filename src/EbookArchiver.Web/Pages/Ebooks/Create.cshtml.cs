@@ -28,8 +28,11 @@ namespace EbookArchiver.Web.Pages.Ebooks
             _context = context;
         }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGet()
         {
+            // Initialize the connection to OneDrive so a save doesn't fail.
+            await _bookService.InitiializeAccessAsync();
+
             AccountId = new SelectList(_context.Accounts.OrderBy(a => a.DisplayName), nameof(Account.AccountId), nameof(Account.DisplayName));
             BookId = new SelectList(_context.Books.OrderBy(b => b.Title), nameof(Book.BookId), nameof(Book.Title));
             return Page();

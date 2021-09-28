@@ -9,18 +9,25 @@ namespace EbookArchiver.OneDrive
 {
     public class BookService
     {
-        private readonly IGraphServiceClientFactory _graphServiceClientFactory;
+        private readonly GraphServiceClient _graphClient;
 
-        public BookService(IGraphServiceClientFactory graphServiceClientFactory) => _graphServiceClientFactory = graphServiceClientFactory;
+        public BookService(IGraphServiceClientFactory graphServiceClientFactory) => _graphClient = graphServiceClientFactory.GetGraphClientForScopes(GraphConstants.FilesReadWriteAppFolder);
+
+        public async Task InitiializeAccessAsync() => await _graphClient.Me
+            .Drive
+            .Special
+            .AppRoot
+            .Request()
+            .GetAsync();
 
         public async Task UpdateAuthorPathAsync(Author author)
         {
-            GraphServiceClient? graphClient = _graphServiceClientFactory.GetGraphClientForScopes(GraphConstants.FilesReadWriteAppFolder);
+            string? folderName = ReplaceFileSystemUnlikedCharacters(author.DisplayName);
 
             // Create or rename the folder for the author.
             if (author.FolderId == null)
             {
-                DriveItem? uploadSession = await graphClient.Me
+                DriveItem? uploadSession = await _graphClient.Me
                     .Drive
                     .Special
                     .AppRoot
@@ -28,7 +35,7 @@ namespace EbookArchiver.OneDrive
                     .Request()
                     .AddAsync(new DriveItem
                     {
-                        Name = author.DisplayName,
+                        Name = folderName,
                         Folder = new Folder()
                     });
 
@@ -37,15 +44,15 @@ namespace EbookArchiver.OneDrive
             else
             {
                 // See if we need to rename it.
-                DriveItem? item = await graphClient.Me
+                DriveItem? item = await _graphClient.Me
                     .Drive
                     .Items[author.FolderId]
                     .Request()
                     .GetAsync();
-                if (item.Name != author.DisplayName)
+                if (item.Name != folderName)
                 {
-                    item.Name = author.DisplayName;
-                    await graphClient.Me
+                    item.Name = folderName;
+                    await _graphClient.Me
                         .Drive
                         .Items[item.Id]
                         .Request()
@@ -56,8 +63,6 @@ namespace EbookArchiver.OneDrive
 
         public async Task UpdateBookPathAsync(Book book, bool createFolder = false)
         {
-            GraphServiceClient? graphClient = _graphServiceClientFactory.GetGraphClientForScopes(GraphConstants.FilesReadWriteAppFolder);
-
             // Create or update the folder for the author.
             if (book.Author == null)
             {
@@ -65,19 +70,21 @@ namespace EbookArchiver.OneDrive
             }
             await UpdateAuthorPathAsync(book.Author);
 
+            string? folderName = ReplaceFileSystemUnlikedCharacters(book.Title);
+
             // Create or update the folder for the book.
             if (book.FolderId == null)
             {
                 if (createFolder)
                 {
-                    DriveItem? uploadSession = await graphClient.Me
+                    DriveItem? uploadSession = await _graphClient.Me
                         .Drive
                         .Items[book.Author.FolderId]
                         .Children
                         .Request()
                         .AddAsync(new DriveItem
                         {
-                            Name = book.Title,
+                            Name = folderName,
                             Folder = new Folder()
                         });
 
@@ -87,15 +94,15 @@ namespace EbookArchiver.OneDrive
             else
             {
                 // See if we need to rename it or reparent it.
-                DriveItem? item = await graphClient.Me
+                DriveItem? item = await _graphClient.Me
                     .Drive
                     .Items[book.FolderId]
                     .Request()
                     .GetAsync();
                 bool anyChanges = false;
-                if (item.Name != book.Title)
+                if (item.Name != folderName)
                 {
-                    item.Name = book.Title;
+                    item.Name = folderName;
                     anyChanges = true;
                 }
                 if (item.ParentReference.Id != book.Author.FolderId)
@@ -105,7 +112,7 @@ namespace EbookArchiver.OneDrive
                 }
                 if (anyChanges)
                 {
-                    await graphClient.Me
+                    await _graphClient.Me
                         .Drive
                         .Items[item.Id]
                         .Request()
@@ -137,8 +144,6 @@ namespace EbookArchiver.OneDrive
 
         private async Task<string> PutFileAsync(string? folderId, string? fileName, Stream fileContents)
         {
-            GraphServiceClient? graphClient = _graphServiceClientFactory.GetGraphClientForScopes(GraphConstants.FilesReadWriteAppFolder);
-
             // Use properties to specify the conflict behavior
             // in this case, replace
             var uploadProps = new DriveItemUploadableProperties
@@ -151,7 +156,7 @@ namespace EbookArchiver.OneDrive
             };
 
             // POST /me/drive/items/folderId:/fileName:/createUploadSession
-            UploadSession? uploadSession = await graphClient.Me
+            UploadSession? uploadSession = await _graphClient.Me
                 .Drive
                 .Items[folderId]
                 .ItemWithPath(fileName)
