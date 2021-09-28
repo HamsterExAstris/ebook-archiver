@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using EbookArchiver.Models;
 using EbookArchiver.OneDrive;
@@ -29,8 +30,8 @@ namespace EbookArchiver.Web.Pages.Ebooks
 
         public IActionResult OnGet()
         {
-            AccountId = new SelectList(_context.Accounts, nameof(Account.AccountId), nameof(Account.DisplayName));
-            BookId = new SelectList(_context.Books, nameof(Book.BookId), nameof(Book.Title));
+            AccountId = new SelectList(_context.Accounts.OrderBy(a => a.DisplayName), nameof(Account.AccountId), nameof(Account.DisplayName));
+            BookId = new SelectList(_context.Books.OrderBy(b => b.Title), nameof(Book.BookId), nameof(Book.Title));
             return Page();
         }
 

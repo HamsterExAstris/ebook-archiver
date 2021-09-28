@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+using EbookArchiver.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using EbookArchiver.Data.MySql;
-using EbookArchiver.Models;
 
 namespace EbookArchiver.Web.Pages.Books
 {
@@ -14,18 +12,17 @@ namespace EbookArchiver.Web.Pages.Books
     {
         private readonly EbookArchiver.Data.MySql.EbookArchiverDbContext _context;
 
-        public IndexModel(EbookArchiver.Data.MySql.EbookArchiverDbContext context)
-        {
-            _context = context;
-        }
+        public IndexModel(EbookArchiver.Data.MySql.EbookArchiverDbContext context) => _context = context;
 
         public IList<Book> Book { get; set; } = Array.Empty<Book>();
 
-        public async Task OnGetAsync()
-        {
-            Book = await _context.Books
-                .Include(b => b.Author)
-                .Include(b => b.Series).ToListAsync();
-        }
+        public async Task OnGetAsync() => Book = await _context.Books
+            .Include(b => b.Author)
+            .Include(b => b.Series)
+            .OrderBy(b => b.Author!.DisplayName)
+            .ThenBy(b => b.Series != null ? b.Series.DisplayName : string.Empty)
+            .ThenBy(b => b.SeriesIndex)
+            .ThenBy(b => b.Title)
+            .ToListAsync();
     }
 }

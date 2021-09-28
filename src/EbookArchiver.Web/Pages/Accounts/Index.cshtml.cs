@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using EbookArchiver.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -11,16 +12,10 @@ namespace EbookArchiver.Web.Pages.Accounts
     {
         private readonly EbookArchiver.Data.MySql.EbookArchiverDbContext _context;
 
-        public IndexModel(EbookArchiver.Data.MySql.EbookArchiverDbContext context)
-        {
-            _context = context;
-        }
+        public IndexModel(EbookArchiver.Data.MySql.EbookArchiverDbContext context) => _context = context;
 
         public IList<Account> Account { get; set; } = Array.Empty<Account>();
 
-        public async Task OnGetAsync()
-        {
-            Account = await _context.Accounts.ToListAsync();
-        }
+        public async Task OnGetAsync() => Account = await _context.Accounts.OrderBy(a => a.DisplayName).ToListAsync();
     }
 }

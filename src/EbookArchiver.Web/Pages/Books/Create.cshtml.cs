@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using EbookArchiver.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -16,8 +17,8 @@ namespace EbookArchiver.Web.Pages.Books
 
         public IActionResult OnGet()
         {
-            AuthorId = new SelectList(_context.Authors, nameof(Author.AuthorId), nameof(Author.DisplayName));
-            SeriesId = new SelectList(_context.Series,
+            AuthorId = new SelectList(_context.Authors.OrderBy(a => a.DisplayName), nameof(Author.AuthorId), nameof(Author.DisplayName));
+            SeriesId = new SelectList(_context.Series.OrderBy(a => a.DisplayName),
                 nameof(EbookArchiver.Models.Series.SeriesId),
                 nameof(EbookArchiver.Models.Series.DisplayName));
             return Page();
