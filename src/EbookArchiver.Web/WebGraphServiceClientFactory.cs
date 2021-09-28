@@ -32,8 +32,17 @@ namespace EbookArchiver.OneDrive
                 }
             );
 
-        // If the Graph client is unable to get a token for the
-        // requested scopes, it throws this type of exception.
+        /// <summary>
+        /// If the Graph client is unable to get a token for the
+        /// requested scopes, it throws this type of exception.
+        /// </summary>
+        /// <remarks>
+        /// The sample apps call this within a try/catch cause. This will rethrow if it's an auth failure, and
+        /// return otherwise, allowing the page to display an error message.
+        ///
+        /// If errors should just go to the global error handler, this does not need to be called.
+        /// <see cref="AuthorizeForScopesAttribute"/> alone is all that's needed.
+        /// </remarks>
         public static void InvokeAuthIfNeeded(ServiceException serviceException)
         {
             // Check if this failed because interactive auth is needed
