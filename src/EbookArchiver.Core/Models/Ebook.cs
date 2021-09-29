@@ -62,7 +62,7 @@ namespace EbookArchiver.Models
         /// <summary>
         /// Gets or sets the version string provided by the vendor, if any.
         /// </summary>
-        [Display(Name = "VendorVersion")]
+        [Display(Name = "Vendor Version")]
         public string? VendorVersion { get; set; }
 
         public override string ToString()

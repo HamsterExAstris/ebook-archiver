@@ -1,22 +1,30 @@
-﻿using System;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace EbookArchiver.Models
 {
-    [Flags]
     public enum EbookFormat
     {
         None = 0,
         Palm = 1,
+        [Display(Name = "Microsoft Reader")]
         MicrosoftReader = 2,
+        [Display(Name = "Mobipocket/Kindle Format 7")]
         Mobipocket = 4,
-        KindleFormat7 = Mobipocket,
         Epub = 8,
         Topaz = 16,
+        [Display(Name = "Kindle Format 8")]
         KindleFormat8 = 32,
-        KindleFormat7And8 = KindleFormat7 | KindleFormat8,
+        [Display(Name = "Kindle Format 7 + 8")]
+        KindleFormat7And8 = Mobipocket | KindleFormat8,
+        [Display(Name = "Hardcover")]
         Hardcover = 64,
+        [Display(Name = "Trade Paperback")]
         TradePaperback = 128,
+        [Display(Name = "Mass Market Paperback")]
         MassMarketPaperback = 256,
-        PortableDocumentFormat = 512
+        [Display(Name = "PDF")]
+        PortableDocumentFormat = 512,
+        [Display(Name = "Kindle KFX")]
+        KindleKfx = 1024
     }
 }
