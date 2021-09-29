@@ -83,6 +83,14 @@
                 <a asp-page="./Edit" asp-route-id="@item.EbookId">Edit</a> |
                 <a asp-page="./Details" asp-route-id="@item.EbookId">Details</a> |
                 <a asp-page="./Delete" asp-route-id="@item.EbookId">Delete</a>
+                @if (item.DrmStrippedFileId != null)
+                {
+                    <text>|</text> <a asp-page="./Download" asp-route-id="@item.EbookId" asp-route-drmfree="true">Download DRM-free</a>
+                }
+                @if (item.EbookFileId != null)
+                {
+                    <text>|</text> <a asp-page="./Download" asp-route-id="@item.EbookId" asp-route-drmfree="false">Download Original</a>
+                }
             </td>
         </tr>
 }

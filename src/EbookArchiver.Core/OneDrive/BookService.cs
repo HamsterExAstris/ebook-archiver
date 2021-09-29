@@ -189,7 +189,7 @@ namespace EbookArchiver.OneDrive
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public static string ReplaceFileSystemUnlikedCharacters(string input)
+        private static string ReplaceFileSystemUnlikedCharacters(string input)
         {
             // Windows: Directory name cannot end with a period.
             if (input.EndsWith("."))
@@ -200,5 +200,12 @@ namespace EbookArchiver.OneDrive
             // Windows: Directory name cannot contain a colon.
             return input.Replace(":", "-");
         }
+
+        public Task<Stream> DownloadEbookAsync(string fileId) => _graphClient.Me
+            .Drive
+            .Items[fileId]
+            .Content
+            .Request()
+            .GetAsync();
     }
 }
