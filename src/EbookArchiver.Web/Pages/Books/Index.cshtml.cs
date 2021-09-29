@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using EbookArchiver.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -16,13 +15,9 @@ namespace EbookArchiver.Web.Pages.Books
 
         public IList<Book> Book { get; set; } = Array.Empty<Book>();
 
-        public async Task OnGetAsync() => Book = await _context.Books
+        public async Task OnGetAsync() => Book = await _context.SortedBooks
             .Include(b => b.Author)
             .Include(b => b.Series)
-            .OrderBy(b => b.Author!.DisplayName)
-            .ThenBy(b => b.Series != null ? b.Series.DisplayName : string.Empty)
-            .ThenBy(b => b.SeriesIndex)
-            .ThenBy(b => b.Title)
             .ToListAsync();
     }
 }

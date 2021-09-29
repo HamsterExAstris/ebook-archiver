@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using EbookArchiver.Models;
@@ -21,6 +22,37 @@ namespace EbookArchiver.Data.MySql
 
         public DbSet<Book> Books => Set<Book>();
 
+        /// <summary>
+        /// Sort the books by <see cref="Book.DisplayName"/>.
+        /// </summary>
+        public IOrderedQueryable<Book> SortedBooks => Books
+            .OrderBy(b => b.Author!.DisplayName)
+            .ThenBy(b => b.Series != null ? b.Series.DisplayName : string.Empty)
+            .ThenBy(b => b.SeriesIndex)
+            .ThenBy(b => b.Title);
+
+        public IQueryable<Book> SortedBooksAndChildren => SortedBooks
+            .Include(b => b!.Series)
+            .Include(b => b!.Author);
+
+        /// <summary>
+        /// Sort the books by <see cref="Book.DisplayName"/>.
+        /// </summary>
+        public IQueryable<Ebook> SortedEbooks => Books
+            .OrderBy(b => b.Author!.DisplayName)
+            .ThenBy(b => b.Series != null ? b.Series.DisplayName : string.Empty)
+            .ThenBy(b => b.SeriesIndex)
+            .ThenBy(b => b.Title)
+            // EF will always populate this, but we can't allow it to be non-nullable because a default value breaks population.
+            .SelectMany(b => b.Ebooks!.OrderBy(e => e.EbookId));
+
+        public IQueryable<Ebook> SortedEbooksAndChildren => SortedEbooks
+            .Include(e => e.Account)
+            .Include(e => e.Book)
+            .ThenInclude(b => b!.Series)
+            .Include(e => e.Book)
+            .ThenInclude(b => b!.Author);
+
         public DbSet<Ebook> Ebooks => Set<Ebook>();
 
         public DbSet<Series> Series => Set<Series>();
@@ -38,6 +70,9 @@ namespace EbookArchiver.Data.MySql
         public EbookArchiverDbContext(DbContextOptions options) : base(options)
         {
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+            => optionsBuilder.LogTo(message => Debug.WriteLine(message));
 
         void ILibrary.AddNewAccount(Account newAccount)
         {

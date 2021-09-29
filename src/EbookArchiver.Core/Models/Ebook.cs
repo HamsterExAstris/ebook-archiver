@@ -8,7 +8,6 @@ namespace EbookArchiver.Models
     /// </summary>
     public class Ebook
     {
-        [Display(Name = "Book")]
         public int EbookId { get; set; }
 
         public Account? Account { get; set; }
@@ -18,11 +17,12 @@ namespace EbookArchiver.Models
         /// </summary>
         public int? AccountId { get; set; }
 
-        public Book Book { get; set; } = new();
+        public Book? Book { get; set; }
 
         /// <summary>
         /// Gets or sets the foreign key to this ebook's <see cref="Book"/>.
         /// </summary>
+        [Display(Name = "Book")]
         public int BookId { get; set; }
 
         /// <summary>

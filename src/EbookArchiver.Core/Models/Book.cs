@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace EbookArchiver.Models
@@ -34,26 +35,32 @@ namespace EbookArchiver.Models
 
         public string? FolderId { get; set; }
 
-        public override string ToString()
+        [Display(Name = "Title")]
+        public string DisplayName
         {
-            var result = new StringBuilder();
-            if (Author != null)
+            get
             {
-                result.Append(Author.DisplayName);
-                result.Append(" - ");
-            }
-            if (Series != null)
-            {
-                result.Append(Series.DisplayName);
-                if (!string.IsNullOrWhiteSpace(SeriesIndex))
+                var result = new StringBuilder();
+                if (Author != null)
                 {
-                    result.Append(" #");
-                    result.Append(SeriesIndex);
+                    result.Append(Author.DisplayName);
+                    result.Append(" - ");
                 }
-                result.Append(" - ");
+                if (Series != null)
+                {
+                    result.Append(Series.DisplayName);
+                    if (!string.IsNullOrWhiteSpace(SeriesIndex))
+                    {
+                        result.Append(" #");
+                        result.Append(SeriesIndex);
+                    }
+                    result.Append(" - ");
+                }
+                result.Append(Title);
+                return result.ToString();
             }
-            result.Append(Title);
-            return result.ToString();
         }
+
+        public List<Ebook>? Ebooks { get; set; }
     }
 }

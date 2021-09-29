@@ -70,7 +70,7 @@ namespace EbookArchiver.OneDrive
             }
             await UpdateAuthorPathAsync(book.Author);
 
-            string? folderName = ReplaceFileSystemUnlikedCharacters(book.Title);
+            string? folderName = ReplaceFileSystemUnlikedCharacters(book.DisplayName);
 
             // Create or update the folder for the book.
             if (book.FolderId == null)
@@ -123,6 +123,11 @@ namespace EbookArchiver.OneDrive
 
         public async Task UploadEbookAsync(Ebook ebook, Stream? original, Stream? drmFree)
         {
+            if (ebook.Book == null)
+            {
+                throw new ArgumentException("Book property must be populated.", nameof(ebook));
+            }
+
             await UpdateBookPathAsync(ebook.Book, true);
 
             if (original != null)

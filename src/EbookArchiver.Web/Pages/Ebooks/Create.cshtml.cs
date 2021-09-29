@@ -34,7 +34,7 @@ namespace EbookArchiver.Web.Pages.Ebooks
             await _bookService.InitiializeAccessAsync();
 
             AccountId = new SelectList(_context.Accounts.OrderBy(a => a.DisplayName), nameof(Account.AccountId), nameof(Account.DisplayName));
-            BookId = new SelectList(_context.Books.OrderBy(b => b.Title), nameof(Book.BookId), nameof(Book.Title));
+            BookId = new SelectList(_context.SortedBooksAndChildren, nameof(Book.BookId), nameof(Book.DisplayName));
             return Page();
         }
 
@@ -83,14 +83,9 @@ namespace EbookArchiver.Web.Pages.Ebooks
                 }
 
                 // Get the information on the book that OneDrive will need.
-                Book? book = await _context.Books
+                emptyModel.Book = await _context.Books
                     .Include(b => b.Author)
                     .FirstOrDefaultAsync(b => b.BookId == emptyModel.BookId);
-                if (book == null)
-                {
-                    throw new InvalidOperationException("BookId " + emptyModel.BookId + " not found in database.");
-                }
-                emptyModel.Book = book;
 
                 // Upload the files to OneDrive.
                 if (OriginalFile != null)
