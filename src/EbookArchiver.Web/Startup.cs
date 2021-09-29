@@ -65,6 +65,8 @@ namespace EbookArchiver.Web
                 )
             );
 
+            services.AddApplicationInsightsTelemetry();
+
             // Eventually we'll want to use Lamar, but it doesn't support .NET 6 yet.
             services.AddScoped<BookService>();
             services.AddScoped<IGraphServiceClientFactory, WebGraphServiceClientFactory>();
