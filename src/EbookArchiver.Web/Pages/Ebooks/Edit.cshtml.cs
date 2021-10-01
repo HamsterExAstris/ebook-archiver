@@ -105,6 +105,7 @@ namespace EbookArchiver.Web.Pages.Ebooks
                 // Get the information on the book that OneDrive will need.
                 Book? book = await _context.Books
                     .Include(b => b.Author)
+                    .Include(b => b.Series)
                     .FirstOrDefaultAsync(b => b.BookId == modelToUpdate.BookId);
                 if (book == null)
                 {

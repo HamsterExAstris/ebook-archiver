@@ -70,7 +70,7 @@ namespace EbookArchiver.OneDrive
             }
             await UpdateAuthorPathAsync(book.Author);
 
-            string? folderName = ReplaceFileSystemUnlikedCharacters(book.DisplayName);
+            string? folderName = ReplaceFileSystemUnlikedCharacters(book.FolderName);
 
             // Create or update the folder for the book.
             if (book.FolderId == null)

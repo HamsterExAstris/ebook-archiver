@@ -61,6 +61,26 @@ namespace EbookArchiver.Models
             }
         }
 
+        public string FolderName
+        {
+            get
+            {
+                var result = new StringBuilder();
+                if (Series != null)
+                {
+                    result.Append(Series.DisplayName);
+                    if (!string.IsNullOrWhiteSpace(SeriesIndex))
+                    {
+                        result.Append(" #");
+                        result.Append(SeriesIndex);
+                    }
+                    result.Append(" - ");
+                }
+                result.Append(Title);
+                return result.ToString();
+            }
+        }
+
         public List<Ebook>? Ebooks { get; set; }
     }
 }

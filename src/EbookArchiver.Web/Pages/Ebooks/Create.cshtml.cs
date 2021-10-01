@@ -85,6 +85,7 @@ namespace EbookArchiver.Web.Pages.Ebooks
                 // Get the information on the book that OneDrive will need.
                 emptyModel.Book = await _context.Books
                     .Include(b => b.Author)
+                    .Include(b => b.Series)
                     .FirstOrDefaultAsync(b => b.BookId == emptyModel.BookId);
 
                 // Upload the files to OneDrive.
