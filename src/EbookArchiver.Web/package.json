@@ -3,7 +3,7 @@
   "name": "ebook-archiver",
   "private": true,
   "devDependencies": {
-    "@babel/core": "^7.15.5",
+    "@babel/core": "^7.15.8",
     "@babel/preset-env": "^7.15.6",
     "del": "^6.0.0",
     "gulp": "^4.0.2",
