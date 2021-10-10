@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using EbookArchiver.Models;
@@ -108,7 +109,7 @@ namespace EbookArchiver.Data.MySql
         {
             if (!Books.Any(b => b.BookId == newEbook.BookId))
             {
-                throw new InvalidOperationException(string.Format(ErrorReferenceDoesNotExist, "Ebook", "Book"));
+                throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, ErrorReferenceDoesNotExist, "Ebook", "Book"));
             }
 
             Ebooks.Add(newEbook);

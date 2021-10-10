@@ -1,5 +1,7 @@
 <Project>
   <PropertyGroup>
+    <!-- "Latest" doesn't seem to work. The .NET 6 SDK only ships with level 5. -->
+    <AnalysisLevel>5-recommended</AnalysisLevel>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>

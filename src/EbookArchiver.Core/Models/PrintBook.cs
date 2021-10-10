@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace EbookArchiver.Models
 {
@@ -27,12 +28,12 @@ namespace EbookArchiver.Models
         /// </summary>
         public void SetISBN10(string value)
         {
-            this.ISBN13 = "978" + value.Substring(0, 9);
+            ISBN13 = string.Concat("978", value.AsSpan(0, 9));
 
             // Convert the string to an array of digits.
-            var digits = new byte[12];
+            byte[]? digits = new byte[12];
             byte nextIndex = 0;
-            foreach (var digit in this.ISBN13)
+            foreach (char digit in ISBN13)
             {
                 digits[nextIndex] = Convert.ToByte(digit);
                 nextIndex++;
@@ -46,8 +47,8 @@ namespace EbookArchiver.Models
             }
 
             // Calculate the check digit and append it to the ISBN.
-            var checkDigit = (10 - (sum % 10)) % 10;
-            this.ISBN13 += checkDigit.ToString();
+            int checkDigit = (10 - (sum % 10)) % 10;
+            ISBN13 += checkDigit.ToString(CultureInfo.InvariantCulture);
         }
     }
 }

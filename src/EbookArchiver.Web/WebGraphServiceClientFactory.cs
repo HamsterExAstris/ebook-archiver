@@ -10,7 +10,7 @@ namespace EbookArchiver.OneDrive
 {
     public class WebGraphServiceClientFactory : IGraphServiceClientFactory
     {
-        protected readonly ITokenAcquisition _tokenAcquisition;
+        private readonly ITokenAcquisition _tokenAcquisition;
 
         public WebGraphServiceClientFactory(
             ITokenAcquisition tokenAcquisition) => _tokenAcquisition = tokenAcquisition;

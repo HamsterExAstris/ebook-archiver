@@ -180,7 +180,7 @@ namespace EbookArchiver.OneDrive
 
             return uploadResult.UploadSucceeded
                 ? uploadResult.ItemResponse.Id
-                : throw new Exception("Error uploading file.");
+                : throw new EbookArchiverException("Error uploading file.");
         }
 
         /// <summary>
@@ -192,7 +192,7 @@ namespace EbookArchiver.OneDrive
         private static string ReplaceFileSystemUnlikedCharacters(string input)
         {
             // Windows: Directory name cannot end with a period.
-            if (input.EndsWith("."))
+            if (input.EndsWith(".", StringComparison.OrdinalIgnoreCase))
             {
                 input += "_";
             }

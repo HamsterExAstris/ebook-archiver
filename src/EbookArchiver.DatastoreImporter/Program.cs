@@ -1,4 +1,5 @@
-﻿using EbookArchiver.Data.MySql;
+﻿using System.Globalization;
+using EbookArchiver.Data.MySql;
 using EbookArchiver.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -48,7 +49,7 @@ using (var parser = new TextFieldParser(filePath))
                 Account? account = JsonConvert.DeserializeObject<Account>(currentRow[2]);
                 if (account != null)
                 {
-                    account.AccountId = int.Parse(currentRow[1]);
+                    account.AccountId = int.Parse(currentRow[1], CultureInfo.InvariantCulture);
                     accounts.Add(account);
                 }
                 break;
@@ -56,7 +57,7 @@ using (var parser = new TextFieldParser(filePath))
                 Author? author = JsonConvert.DeserializeObject<Author>(currentRow[2]);
                 if (author != null)
                 {
-                    author.AuthorId = int.Parse(currentRow[1]);
+                    author.AuthorId = int.Parse(currentRow[1], CultureInfo.InvariantCulture);
                     authors.Add(author);
                 }
                 break;
@@ -64,7 +65,7 @@ using (var parser = new TextFieldParser(filePath))
                 Book? book = JsonConvert.DeserializeObject<Book>(currentRow[2]);
                 if (book != null)
                 {
-                    book.BookId = int.Parse(currentRow[1]);
+                    book.BookId = int.Parse(currentRow[1], CultureInfo.InvariantCulture);
                     books.Add(book);
                 }
                 break;
@@ -72,7 +73,7 @@ using (var parser = new TextFieldParser(filePath))
                 Ebook? ebook = JsonConvert.DeserializeObject<Ebook>(currentRow[2]);
                 if (ebook != null)
                 {
-                    ebook.EbookId = int.Parse(currentRow[1]);
+                    ebook.EbookId = int.Parse(currentRow[1], CultureInfo.InvariantCulture);
                     ebooks.Add(ebook);
                 }
                 break;
@@ -80,7 +81,7 @@ using (var parser = new TextFieldParser(filePath))
                 Series? series = JsonConvert.DeserializeObject<Series>(currentRow[2]);
                 if (series != null)
                 {
-                    series.SeriesId = int.Parse(currentRow[1]);
+                    series.SeriesId = int.Parse(currentRow[1], CultureInfo.InvariantCulture);
                     seriesList.Add(series);
                 }
                 break;
