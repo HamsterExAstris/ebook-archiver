@@ -191,5 +191,3 @@ end_of_line = crlf
 # Disabling specific recommended analyzers.
 # We don't care about CLS compliance and there's no way to specify without AssemblyInfo.cs.
 dotnet_diagnostic.CA1014.severity=silent
-# Analyzer is broken, will be fixed in future release: https://github.com/dotnet/roslyn-analyzers/issues/5450
-dotnet_diagnostic.CA2252.severity=silent
