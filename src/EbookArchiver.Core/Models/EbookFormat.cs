@@ -16,12 +16,10 @@ namespace EbookArchiver.Models
         KindleFormat8 = 32,
         [Display(Name = "Kindle Format 7 + 8")]
         KindleFormat7And8 = Mobipocket | KindleFormat8,
-        [Display(Name = "Hardcover")]
-        Hardcover = 64,
-        [Display(Name = "Trade Paperback")]
-        TradePaperback = 128,
-        [Display(Name = "Mass Market Paperback")]
-        MassMarketPaperback = 256,
+        [Display(Name = "CBZ")]
+        ComicBookZip = 64,
+        [Display(Name = "CBR")]
+        ComicBookRar = 128,
         [Display(Name = "PDF")]
         PortableDocumentFormat = 512,
         [Display(Name = "Kindle KFX")]
