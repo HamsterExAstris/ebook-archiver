@@ -1,0 +1,29 @@
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+<script>
+    function launchOneDrivePicker(targetId) {
+        var odOptions = {
+            clientId: '@Configuration["AzureAd:ClientId"]',
+            action: "query",
+            multiSelect: false,
+            openInNewWindow: true,
+            advanced: {
+                //filter: ".png,.jpg,.jpeg",
+                queryParameters: "select=id",
+                redirectUri: '@Url.Page("Link", null, null, this.Context.Request.Scheme)'
+            },
+            success: function (response) {
+                if (response && response.value.length > 0) {
+                    document.getElementById(targetId).value = response.value[0].id;
+                }
+                else {
+                    alert('Operation succeeded but no response was found');
+                }
+            },
+            cancel: function () { alert('Operation cancelled'); },
+            error: function (e) { alert('An error occourred: ' + e); }
+        }
+    OneDrive.open(odOptions);
+  }
+</script>

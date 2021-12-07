@@ -20,6 +20,27 @@ namespace EbookArchiver.OneDrive
             .Request()
             .GetAsync();
 
+        public async Task LinkEbookAsync(Ebook ebook, string? original, string? drmFree)
+        {
+            if (ebook.Book == null)
+            {
+                throw new ArgumentException("Book property must be populated.", nameof(ebook));
+            }
+
+            await UpdateBookPathAsync(ebook.Book, true);
+
+            if (original != null)
+            {
+                (ebook.EbookFileId, ebook.FileName) = await MoveFileAsync(ebook.Book.FolderId, original, ebook.EbookFileId);
+            }
+
+            if (drmFree != null)
+            {
+                // Not worrying about collisions. This upload should fail if they collide and they need to be handled manually.
+                (ebook.DrmStrippedFileId, ebook.DrmStrippedFileName) = await MoveFileAsync(ebook.Book.FolderId, drmFree, ebook.DrmStrippedFileId);
+            }
+        }
+
         public async Task UpdateAuthorPathAsync(Author author)
         {
             string? folderName = ReplaceFileSystemUnlikedCharacters(author.DisplayName);
@@ -94,20 +115,28 @@ namespace EbookArchiver.OneDrive
             else
             {
                 // See if we need to rename it or reparent it.
-                DriveItem? item = await _graphClient.Me
+                var item = new DriveItem
+                {
+                    Id = book.FolderId,
+                    ODataType = null
+                };
+                DriveItem? existingItem = await _graphClient.Me
                     .Drive
                     .Items[book.FolderId]
                     .Request()
                     .GetAsync();
                 bool anyChanges = false;
-                if (item.Name != folderName)
+                if (existingItem.Name != folderName)
                 {
                     item.Name = folderName;
                     anyChanges = true;
                 }
-                if (item.ParentReference.Id != book.Author.FolderId)
+                if (existingItem.ParentReference.Id != book.Author.FolderId)
                 {
-                    item.ParentReference.Id = book.Author.FolderId;
+                    item.ParentReference = new ItemReference
+                    {
+                        Id = book.Author.FolderId
+                    };
                     anyChanges = true;
                 }
                 if (anyChanges)
@@ -145,6 +174,47 @@ namespace EbookArchiver.OneDrive
 
                 ebook.DrmStrippedFileId = await PutFileAsync(ebook.Book.FolderId, fileName, drmFree);
             }
+        }
+
+        private async Task<(string, string)> MoveFileAsync(string? folderId, string source, string? oldItemId)
+        {
+            // Remove existing file if name doesn't match.
+            if (oldItemId != null)
+            {
+                DriveItem? sourceItem = await _graphClient.Me.Drive
+                    .Items[source]
+                    .Request()
+                    .GetAsync();
+                DriveItem? existingItem = await _graphClient.Me.Drive
+                    .Items[oldItemId]
+                    .Request()
+                    .GetAsync();
+                if (existingItem != null && sourceItem.Name != existingItem.Name)
+                {
+                    await _graphClient.Me.Drive
+                        .Items[oldItemId]
+                        .Request()
+                        .DeleteAsync();
+                }
+            }
+
+            var moveItem = new DriveItem
+            {
+                Id = source,
+                ParentReference = new ItemReference
+                {
+                    Id = folderId
+                }
+            };
+
+            DriveItem? response = await _graphClient.Me.Drive
+                .Items[source]
+                .Request()
+                .UpdateAsync(moveItem);
+
+            return (response != null)
+                ? (response.Id, response.Name)
+                : throw new EbookArchiverException("Error moving file");
         }
 
         private async Task<string> PutFileAsync(string? folderId, string? fileName, Stream fileContents)

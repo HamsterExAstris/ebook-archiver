@@ -12,6 +12,7 @@
         <link rel="stylesheet" href="~/dist/site.min.css" asp-append-version="true" />
     </environment>
     @Html.Raw(JavaScriptSnippet.FullScript)
+    @await RenderSectionAsync("HeaderScripts", required: false)
 </head>
 <body>
     <header>

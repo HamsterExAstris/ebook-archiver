@@ -36,8 +36,16 @@ namespace EbookArchiver.Web.Pages.Ebooks
         public IFormFile? DrmStrippedFile { get; set; }
 
         [BindProperty]
+        [Display(Name = "Link DRM-Free File from OneDrive")]
+        public string? DrmStrippedFileId { get; set; }
+
+        [BindProperty]
         [Display(Name = "Original File")]
         public IFormFile? OriginalFile { get; set; }
+
+        [BindProperty]
+        [Display(Name = "Link Original File from OneDrive")]
+        public string? OriginalFileId { get; set; }
 
         public IEnumerable<SelectListItem> AccountId { get; set; } = Array.Empty<SelectListItem>();
 
@@ -114,7 +122,22 @@ namespace EbookArchiver.Web.Pages.Ebooks
                 modelToUpdate.Book = book;
 
                 // Upload the files to OneDrive.
-                if (OriginalFile != null)
+                if (OriginalFileId != null)
+                {
+                    if (DrmStrippedFileId != null)
+                    {
+                        await _bookService.LinkEbookAsync(modelToUpdate, OriginalFileId, DrmStrippedFileId);
+                    }
+                    else
+                    {
+                        await _bookService.LinkEbookAsync(modelToUpdate, OriginalFileId, null);
+                    }
+                }
+                else if (DrmStrippedFileId != null)
+                {
+                    await _bookService.LinkEbookAsync(modelToUpdate, null, DrmStrippedFileId);
+                }
+                else if (OriginalFile != null)
                 {
                     using Stream originalStream = OriginalFile.OpenReadStream();
                     if (DrmStrippedFile != null)

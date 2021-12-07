@@ -5,6 +5,13 @@
     ViewData["Title"] = "Create";
 }
 
+@section HeaderScripts
+{
+    <script type="text/javascript" src="https://js.live.net/v7.2/OneDrive.js"></script>
+}
+
+<partial name="_OneDrivePickerScript" />
+
 <h1>Create</h1>
 
 <h4>Ebook</h4>
@@ -59,9 +66,21 @@
                 <span asp-validation-for="DrmStrippedFile" class="text-danger"></span>
             </div>
             <div class="mb-3">
+                <label asp-for="DrmStrippedFileId" class="form-label"></label>
+                <input asp-for="DrmStrippedFileId" type="hidden" />
+                <button type="button" onclick="launchOneDrivePicker('@Html.IdFor(m => m.DrmStrippedFileId)')" class="btn btn-secondary">Select file...</button>
+                <span asp-validation-for="DrmStrippedFileId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
                 <label asp-for="OriginalFile" class="form-label"></label>
                 <input asp-for="OriginalFile" class="form-control" type="file" />
                 <span asp-validation-for="OriginalFile" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="OriginalFileId" class="form-label"></label>
+                <input asp-for="OriginalFileId" type="hidden" />
+                <button type="button" onclick="launchOneDrivePicker('@Html.IdFor(m => m.OriginalFileId)')" class="btn btn-secondary">Select file...</button>
+                <span asp-validation-for="OriginalFileId" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <input type="submit" value="Create" class="btn btn-primary" />
