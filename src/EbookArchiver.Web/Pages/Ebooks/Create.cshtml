@@ -68,7 +68,9 @@
             <div class="mb-3">
                 <label asp-for="DrmStrippedFileId" class="form-label"></label>
                 <input asp-for="DrmStrippedFileId" type="hidden" />
-                <button type="button" onclick="launchOneDrivePicker('@Html.IdFor(m => m.DrmStrippedFileId)')" class="btn btn-secondary">Select file...</button>
+                @* This is not bound because we don't want to rely on it. Use the ID and read data back. *@
+                <input id="DrmStrippedFileIdName" class="form-control-plaintext" />
+                <button type="button" onclick="launchOneDrivePicker('@Html.IdFor(m => m.DrmStrippedFileId)', 'DrmStrippedFileIdName')" class="btn btn-secondary">Select file...</button>
                 <span asp-validation-for="DrmStrippedFileId" class="text-danger"></span>
             </div>
             <div class="mb-3">
@@ -79,7 +81,9 @@
             <div class="mb-3">
                 <label asp-for="OriginalFileId" class="form-label"></label>
                 <input asp-for="OriginalFileId" type="hidden" />
-                <button type="button" onclick="launchOneDrivePicker('@Html.IdFor(m => m.OriginalFileId)')" class="btn btn-secondary">Select file...</button>
+                @* This is not bound because we don't want to rely on it. Use the ID and read data back. *@
+                <input id="OriginalFileIdName" class="form-control-plaintext" />
+                <button type="button" onclick="launchOneDrivePicker('@Html.IdFor(m => m.OriginalFileId)', 'OriginalFileIdName')" class="btn btn-secondary">Select file...</button>
                 <span asp-validation-for="OriginalFileId" class="text-danger"></span>
             </div>
             <div class="mb-3">

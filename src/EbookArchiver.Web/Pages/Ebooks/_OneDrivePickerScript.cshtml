@@ -1,27 +1,30 @@
 ﻿@using Microsoft.Extensions.Configuration
+@using Microsoft.Identity.Web
 @inject IConfiguration Configuration
 
 <script>
-    function launchOneDrivePicker(targetId) {
+    function launchOneDrivePicker(inputNameId, fileNameId) {
         var odOptions = {
             clientId: '@Configuration["AzureAd:ClientId"]',
             action: "query",
             multiSelect: false,
+            accountSwitchEnabled: false, // We send the login hint; should always use the same account as the main site.
             openInNewWindow: true,
             advanced: {
-                //filter: ".png,.jpg,.jpeg",
-                queryParameters: "select=id",
-                redirectUri: '@Url.Page("Link", null, null, this.Context.Request.Scheme)'
+                queryParameters: "select=id,name",
+                redirectUri: '@Url.Page("Link", null, null, this.Context.Request.Scheme)',
+                loginHint: '@User.GetLoginHint()',
+                isConsumerAccount: @User.IsPersonalAccount().ToString().ToLowerInvariant()
             },
             success: function (response) {
                 if (response && response.value.length > 0) {
-                    document.getElementById(targetId).value = response.value[0].id;
+                    document.getElementById(inputNameId).value = response.value[0].id;
+                    document.getElementById(fileNameId).value = response.value[0].name;
                 }
                 else {
                     alert('Operation succeeded but no response was found');
                 }
             },
-            cancel: function () { alert('Operation cancelled'); },
             error: function (e) { alert('An error occourred: ' + e); }
         }
     OneDrive.open(odOptions);
