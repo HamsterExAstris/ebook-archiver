@@ -261,14 +261,27 @@ namespace EbookArchiver.OneDrive
         /// <returns></returns>
         private static string ReplaceFileSystemUnlikedCharacters(string input)
         {
+            // OneDrive: Names cannot begin or end with spaces.
+            input = input.Trim();
+
+            // OneDrive and Windows: Names cannot have these chracters.
+            input = input.Replace('*', '-');
+            input = input.Replace('\"', '\'');
+            input = input.Replace(':', '-');
+            input = input.Replace('<', '(');
+            input = input.Replace('>', ')');
+            input = input.Replace('?', '_');
+            input = input.Replace('/', '-');
+            input = input.Replace('\\', '-');
+            input = input.Replace('|', '-');
+
             // Windows: Directory name cannot end with a period.
             if (input.EndsWith(".", StringComparison.OrdinalIgnoreCase))
             {
                 input += "_";
             }
 
-            // Windows: Directory name cannot contain a colon.
-            return input.Replace(":", "-");
+            return input;
         }
 
         public Task<Stream> DownloadEbookAsync(string fileId) => _graphClient.Me
