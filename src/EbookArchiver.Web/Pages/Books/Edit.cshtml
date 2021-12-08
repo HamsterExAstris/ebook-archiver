@@ -19,6 +19,11 @@
                 <input asp-for="Book!.Title" class="form-control" />
                 <span asp-validation-for="Book!.Title" class="text-danger"></span>
             </div>
+            <div class="mb-3 form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Book!.TitleDuplicatesSeriesData" /> @Html.DisplayNameFor(model => model.Book!.TitleDuplicatesSeriesData)
+                </label>
+            </div>
             <div class="mb-3">
                 <label asp-for="Book!.AuthorId" class="form-label"></label>
                 <select asp-for="Book!.AuthorId" class="form-control" asp-items="Model.AuthorId"></select>

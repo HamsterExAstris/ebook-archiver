@@ -15,7 +15,10 @@ namespace EbookArchiver.Models
         /// <summary>
         /// Gets or sets the book's title.
         /// </summary>
-        public string? Title { get; set; }
+        public string Title { get; set; } = string.Empty;
+
+        [Display(Name = "Does the title duplicate the series data?")]
+        public bool TitleDuplicatesSeriesData { get; set; } = false;
 
         [Display(Name = "Author(s)")]
         public int AuthorId { get; set; }
@@ -46,7 +49,7 @@ namespace EbookArchiver.Models
                     result.Append(Author.DisplayName);
                     result.Append(" - ");
                 }
-                if (Series != null)
+                if (Series != null && !TitleDuplicatesSeriesData)
                 {
                     result.Append(Series.DisplayName);
                     if (!string.IsNullOrWhiteSpace(SeriesIndex))
@@ -54,15 +57,9 @@ namespace EbookArchiver.Models
                         result.Append(" #");
                         result.Append(SeriesIndex);
                     }
+                    result.Append(" - ");
                 }
-                if (!string.IsNullOrWhiteSpace(Title))
-                {
-                    if (Series != null)
-                    {
-                        result.Append(" - ");
-                    }
-                    result.Append(Title);
-                }
+                result.Append(Title);
                 return result.ToString();
             }
         }
@@ -72,7 +69,7 @@ namespace EbookArchiver.Models
             get
             {
                 var result = new StringBuilder();
-                if (Series != null)
+                if (Series != null && !TitleDuplicatesSeriesData)
                 {
                     result.Append(Series.DisplayName);
                     if (!string.IsNullOrWhiteSpace(SeriesIndex))
@@ -80,15 +77,9 @@ namespace EbookArchiver.Models
                         result.Append(" #");
                         result.Append(SeriesIndex);
                     }
+                    result.Append(" - ");
                 }
-                if (!string.IsNullOrWhiteSpace(Title))
-                {
-                    if (Series != null)
-                    {
-                        result.Append(" - ");
-                    }
-                    result.Append(Title);
-                }
+                result.Append(Title);
                 return result.ToString();
             }
         }

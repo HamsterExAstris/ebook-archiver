@@ -72,7 +72,8 @@ namespace EbookArchiver.Web.Pages.Books
                 && await TryUpdateModelAsync(
                     modelToUpdate,
                     nameof(Book),
-                    b => b.Title!,
+                    b => b.Title,
+                    b => b.TitleDuplicatesSeriesData,
                     b => b.AuthorId,
                     b => b.IsNotOwned,
                     b => b.SeriesId!,
