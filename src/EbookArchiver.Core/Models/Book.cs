@@ -15,7 +15,7 @@ namespace EbookArchiver.Models
         /// <summary>
         /// Gets or sets the book's title.
         /// </summary>
-        public string Title { get; set; } = string.Empty;
+        public string? Title { get; set; }
 
         [Display(Name = "Author(s)")]
         public int AuthorId { get; set; }
@@ -54,9 +54,15 @@ namespace EbookArchiver.Models
                         result.Append(" #");
                         result.Append(SeriesIndex);
                     }
-                    result.Append(" - ");
                 }
-                result.Append(Title);
+                if (!string.IsNullOrWhiteSpace(Title))
+                {
+                    if (Series != null)
+                    {
+                        result.Append(" - ");
+                    }
+                    result.Append(Title);
+                }
                 return result.ToString();
             }
         }
@@ -74,9 +80,15 @@ namespace EbookArchiver.Models
                         result.Append(" #");
                         result.Append(SeriesIndex);
                     }
-                    result.Append(" - ");
                 }
-                result.Append(Title);
+                if (!string.IsNullOrWhiteSpace(Title))
+                {
+                    if (Series != null)
+                    {
+                        result.Append(" - ");
+                    }
+                    result.Append(Title);
+                }
                 return result.ToString();
             }
         }
