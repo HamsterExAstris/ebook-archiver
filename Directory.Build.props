@@ -4,5 +4,7 @@
     <AnalysisLevel>5-recommended</AnalysisLevel>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <RestoreLockedMode Condition="'$(Configuration)' == 'Release'">true</RestoreLockedMode>
   </PropertyGroup>
 </Project>
