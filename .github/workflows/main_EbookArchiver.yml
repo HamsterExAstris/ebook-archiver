@@ -22,6 +22,9 @@ jobs:
         dotnet-version: '6.0.x'
         include-prerelease: true
 
+    - name: Restore with dotnet
+      run: dotnet restore --locked-mode
+
     - name: Build with dotnet
       run: dotnet build --configuration Release
       
