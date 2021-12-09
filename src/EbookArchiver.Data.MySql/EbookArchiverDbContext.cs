@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -58,15 +57,15 @@ namespace EbookArchiver.Data.MySql
 
         public DbSet<Series> Series => Set<Series>();
 
-        IEnumerable<Account> ILibrary.Accounts => Accounts;
+        IQueryable<Account> ILibrary.Accounts => Accounts;
 
-        IEnumerable<Author> ILibrary.Authors => Authors;
+        IQueryable<Author> ILibrary.Authors => Authors;
 
-        IEnumerable<Book> ILibrary.Books => Books;
+        IQueryable<Book> ILibrary.Books => Books;
 
-        IEnumerable<Ebook> ILibrary.Ebooks => Ebooks;
+        IQueryable<Ebook> ILibrary.Ebooks => Ebooks;
 
-        IEnumerable<Series> ILibrary.Series => Series;
+        IQueryable<Series> ILibrary.Series => Series;
 
         public EbookArchiverDbContext(DbContextOptions options) : base(options)
         {
@@ -132,6 +131,6 @@ namespace EbookArchiver.Data.MySql
         public void DeleteBook(Book toDelete) => Books.Remove(toDelete);
 
         public void DeleteEbook(Ebook toDelete) => Ebooks.Remove(toDelete);
-        public Task Save() => SaveChangesAsync();
+        public Task SaveAsync() => SaveChangesAsync();
     }
 }

@@ -1,0 +1,21 @@
+﻿@page
+@model EbookArchiver.Web.Pages.Sync.JNovelClubModel
+
+@{
+    ViewData["Title"] = "J-Novel Club";
+}
+
+<h1>J-Novel Club</h1>
+
+<h4>Sync</h4>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-3">
+                <input type="submit" value="Sync" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

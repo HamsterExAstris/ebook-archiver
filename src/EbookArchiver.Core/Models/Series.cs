@@ -12,6 +12,8 @@ namespace EbookArchiver.Models
         [Display(Name = "Display Name")]
         public string DisplayName { get; set; } = string.Empty;
 
+        public string? PublisherId { get; set; }
+
         public override string ToString() => DisplayName;
     }
 }

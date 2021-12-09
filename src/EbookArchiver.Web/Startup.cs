@@ -1,4 +1,6 @@
 using EbookArchiver.Data.MySql;
+using EbookArchiver.JNovelClub;
+using EbookArchiver.Models;
 using EbookArchiver.OneDrive;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -67,9 +69,14 @@ namespace EbookArchiver.Web
 
             services.AddApplicationInsightsTelemetry();
 
+            services.AddHttpClient<SyncService>();
+            services.AddScoped<ILibrary, EbookArchiverDbContext>();
+
             // Eventually we'll want to use Lamar, but it doesn't support .NET 6 yet.
             services.AddScoped<BookService>();
             services.AddScoped<IGraphServiceClientFactory, WebGraphServiceClientFactory>();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

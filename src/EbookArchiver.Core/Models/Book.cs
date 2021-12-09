@@ -38,6 +38,8 @@ namespace EbookArchiver.Models
 
         public string? FolderId { get; set; }
 
+        public string? PublisherId { get; set; }
+
         [Display(Name = "Title")]
         public string DisplayName
         {

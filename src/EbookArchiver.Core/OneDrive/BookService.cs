@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using EbookArchiver.Models;
 using Microsoft.Graph;
@@ -19,6 +20,39 @@ namespace EbookArchiver.OneDrive
             .AppRoot
             .Request()
             .GetAsync();
+
+        public async Task<IDictionary<string, string>> GetJNovelClubEbooksAsync()
+        {
+            IDriveItemChildrenCollectionPage? rootItems = await _graphClient.Me
+                .Drive
+                .Special
+                .AppRoot
+                .Children
+                .Request()
+                .GetAsync();
+            DriveItem? uploads = rootItems.FirstOrDefault(i => i.Name.Equals("upload", StringComparison.OrdinalIgnoreCase));
+            if (uploads != null)
+            {
+                IDriveItemChildrenCollectionPage? uploadItems = await _graphClient.Me
+                    .Drive
+                    .Items[uploads.Id]
+                    .Children
+                    .Request()
+                    .GetAsync();
+                DriveItem? jnc = uploadItems.FirstOrDefault(i => i.Name.Equals("J-Novel Club", StringComparison.OrdinalIgnoreCase));
+                if (jnc != null)
+                {
+                    IDriveItemChildrenCollectionPage? jncItems = await _graphClient.Me
+                        .Drive
+                        .Items[jnc.Id]
+                        .Children
+                        .Request()
+                        .GetAsync();
+                    return jncItems.ToDictionary(k => k.Name, v => v.Id, StringComparer.OrdinalIgnoreCase);
+                }
+            }
+            return new Dictionary<string, string>();
+        }
 
         public async Task LinkEbookAsync(Ebook ebook, string? original, string? drmFree)
         {
