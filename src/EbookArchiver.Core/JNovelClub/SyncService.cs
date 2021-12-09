@@ -128,12 +128,9 @@ namespace EbookArchiver.JNovelClub
                         // Use the slug rather than the per-person unique ID.
                         VendorBookIdentifier = jncPurchase.Volume.Slug
                     };
+                    _library.AddNewEbook(ebook);
                 }
-                if (book.Ebooks == null)
-                {
-                    book.Ebooks = new List<Ebook>();
-                }
-                book.Ebooks.Add(ebook);
+                ebook.Book ??= book;
                 string? fileName = jncPurchase.Volume.Slug + ".epub";
                 if (jncItems.TryGetValue(fileName, out string? oneDriveId))
                 {
