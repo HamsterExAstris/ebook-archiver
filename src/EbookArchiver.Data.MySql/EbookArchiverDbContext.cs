@@ -106,7 +106,8 @@ namespace EbookArchiver.Data.MySql
 
         void ILibrary.AddNewEbook(Ebook newEbook)
         {
-            if (!Books.Any(b => b.BookId == newEbook.BookId))
+            if (newEbook.Book == null
+                && !Books.Any(b => b.BookId == newEbook.BookId))
             {
                 throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, ErrorReferenceDoesNotExist, "Ebook", "Book"));
             }
