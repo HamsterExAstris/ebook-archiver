@@ -75,6 +75,14 @@ jobs:
         include-prerelease: true
       if: ${{ matrix.language == 'csharp' }}
 
+    - name: Ensure Telerik NuGet source
+      run: |
+        dotnet nuget add source 'https://nuget.telerik.com/v3/index.json' \
+          -n Telerik \
+          -u ${{ secrets.REGISTRY_USER }} \
+          -p ${{ secrets.REGISTRY_TOKEN }} \
+          --store-password-in-clear-text
+
     - run: dotnet clean
       if: ${{ matrix.language == 'csharp' }}
 
