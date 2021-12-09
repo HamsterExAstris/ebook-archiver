@@ -28,7 +28,6 @@ jobs:
           -n Telerik
           -u ${{ secrets.REGISTRY_USER }}
           -p ${{ secrets.REGISTRY_TOKEN }}
-          --store-password-in-clear-text
 
     - name: Restore with dotnet
       run: dotnet restore --locked-mode
