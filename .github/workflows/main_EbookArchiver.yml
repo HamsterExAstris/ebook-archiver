@@ -27,7 +27,8 @@ jobs:
         dotnet nuget add source 'https://nuget.telerik.com/v3/index.json' \
           -n Telerik \
           -u ${{ secrets.REGISTRY_USER }} \
-          -p ${{ secrets.REGISTRY_TOKEN }}
+          -p ${{ secrets.REGISTRY_TOKEN }} \
+          --store-password-in-clear-text
 
     - name: Restore with dotnet
       run: dotnet restore --locked-mode
