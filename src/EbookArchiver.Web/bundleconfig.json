@@ -8,7 +8,8 @@
   {
     "outputFileName": "wwwroot/dist/vendor.css",
     "inputFiles": [
-      "node_modules/bootstrap/dist/css/bootstrap.css"
+      "node_modules/bootstrap/dist/css/bootstrap.css",
+      "node_modules/@progress/kendo-theme-bootstrap/dist/all.css"
     ]
   },
   {
@@ -25,9 +26,14 @@
     ]
   },
   {
+    "outputFileName": "wwwroot/dist/vendor-header.js",
+    "inputFiles": [
+      "node_modules/jquery/dist/jquery.js"
+    ]
+  },
+  {
     "outputFileName": "wwwroot/dist/vendor-validation.js",
     "inputFiles": [
-      "node_modules/jquery/dist/jquery.js",
       "node_modules/jquery-validation/dist/jquery.validate.js",
       "node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js"
     ]

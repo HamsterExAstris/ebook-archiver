@@ -12,6 +12,9 @@
         <link rel="stylesheet" href="~/dist/site.min.css" asp-append-version="true" />
     </environment>
     @Html.Raw(JavaScriptSnippet.FullScript)
+    <script src="~/dist/vendor-header.min.js" asp-append-version="true"></script>
+    <script src="https://kendo.cdn.telerik.com/2021.3.1207/js/kendo.all.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2021.3.1207/js/kendo.aspnetmvc.min.js"></script>
     @await RenderSectionAsync("HeaderScripts", required: false)
 </head>
 <body>

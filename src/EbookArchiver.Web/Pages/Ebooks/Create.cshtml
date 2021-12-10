@@ -1,4 +1,5 @@
 ﻿@page
+@using EbookArchiver.Models
 @model EbookArchiver.Web.Pages.Ebooks.CreateModel
 
 @{
@@ -22,7 +23,19 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="mb-3">
                 <label asp-for="Ebook.BookId" class="form-label"></label>
-                <select asp-for="Ebook.BookId" class ="form-control" asp-items="Model.BookId"></select>
+                <kendo-combobox name="@Html.NameFor(m => m.Ebook.BookId)"
+                    filter="FilterType.Contains"
+                    min-length="3"
+                    datatextfield="displayName"
+                    datavaluefield="bookId"
+                    style="width: 100%"
+                >
+                    <datasource type="DataSourceTagHelperType.Custom" server-filtering="true">
+                        <transport>
+                            <read url="@Url.Action("Books", "Filter")" />
+                        </transport>
+                    </datasource>
+                </kendo-combobox>
                 <span asp-validation-for="Ebook.BookId" class="text-danger"></span>
             </div>
             <div class="mb-3">

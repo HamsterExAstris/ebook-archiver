@@ -48,9 +48,10 @@ namespace EbookArchiver.Web
                 // By default, all incoming requests will be authorized according to the default policy
                 options.FallbackPolicy = options.DefaultPolicy;
             });
-            services.AddRazorPages()
+            services.AddMvc()
                 .AddMvcOptions(options => { })
                 .AddMicrosoftIdentityUI();
+            services.AddKendo();
 
             string? connection = Configuration.GetConnectionString("localdb");
             string? port = Configuration.GetValue<string>("WEBSITE_MYSQL_PORT");
@@ -104,7 +105,8 @@ namespace EbookArchiver.Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
-                endpoints.MapControllers();
+                endpoints.MapControllers(); // Web API
+                endpoints.MapDefaultControllerRoute(); // MVC
             });
         }
     }

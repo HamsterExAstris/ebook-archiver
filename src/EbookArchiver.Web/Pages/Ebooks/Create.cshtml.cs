@@ -34,7 +34,6 @@ namespace EbookArchiver.Web.Pages.Ebooks
             await _bookService.InitiializeAccessAsync();
 
             AccountId = new SelectList(_context.Accounts.OrderBy(a => a.DisplayName), nameof(Account.AccountId), nameof(Account.DisplayName));
-            BookId = new SelectList(_context.SortedBooksAndChildren, nameof(Book.BookId), nameof(Book.DisplayName));
             return Page();
         }
 
@@ -58,8 +57,6 @@ namespace EbookArchiver.Web.Pages.Ebooks
         public string? OriginalFileId { get; set; }
 
         public IEnumerable<SelectListItem> AccountId { get; set; } = Array.Empty<SelectListItem>();
-
-        public IEnumerable<SelectListItem> BookId { get; set; } = Array.Empty<SelectListItem>();
 
         public async Task<IActionResult> OnPostAsync()
         {
