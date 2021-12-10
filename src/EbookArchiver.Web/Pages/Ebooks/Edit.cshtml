@@ -24,7 +24,20 @@
             <input type="hidden" asp-for="Ebook!.EbookId" />
             <div class="mb-3">
                 <label asp-for="Ebook!.BookId" class="form-label"></label>
-                <select asp-for="Ebook!.BookId" class="form-control" asp-items="Model.BookId"></select>
+                <kendo-combobox name="@Html.NameFor(m => m.Ebook!.BookId)"
+                    filter="FilterType.Contains"
+                    min-length="2"
+                    enforce-min-length="true"
+                    datatextfield="displayName"
+                    datavaluefield="bookId"
+                    style="width: 100%"
+                >
+                    <datasource type="DataSourceTagHelperType.Custom" server-filtering="true">
+                        <transport>
+                            <read url="@Url.Action("Books", "Filter")" />
+                        </transport>
+                    </datasource>
+                </kendo-combobox>
                 <span asp-validation-for="Ebook!.BookId" class="text-danger"></span>
             </div>
             <div class="mb-3">

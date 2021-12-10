@@ -19,11 +19,17 @@ namespace EbookArchiver.Web.Controllers
 
             if (!string.IsNullOrEmpty(text))
             {
-                books = books.Include(b => b.Series)
-                    .Where(b => (b.Series != null && b.Series.DisplayName.Contains(text)) || b.Title.Contains(text));
+                books = books
+                    .Include(b => b.Author)
+                    .Include(b => b.Series)
+                    .Where(b => b.Title.Contains(text)
+                        || (b.Author != null && b.Author.DisplayName.Contains(text))
+                        || ("#" + b.SeriesIndex).Contains(text)
+                        || (b.Series != null && b.Series.DisplayName.Contains(text)));
             }
 
-            return Json(books.AsEnumerable().OrderBy(b => b.DisplayName).Select(b => new { b.BookId, b.DisplayName }));
+            // Need to cast to enumerable so we only try to access DisplayName locally.
+            return Json(books.AsAsyncEnumerable().OrderBy(b => b.DisplayName).Select(b => new { b.BookId, b.DisplayName }));
         }
     }
 }

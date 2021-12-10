@@ -25,7 +25,8 @@
                 <label asp-for="Ebook.BookId" class="form-label"></label>
                 <kendo-combobox name="@Html.NameFor(m => m.Ebook.BookId)"
                     filter="FilterType.Contains"
-                    min-length="3"
+                    min-length="2"
+                    enforce-min-length="true"
                     datatextfield="displayName"
                     datavaluefield="bookId"
                     style="width: 100%"
