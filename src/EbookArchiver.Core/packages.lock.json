@@ -29,6 +29,12 @@
           "Microsoft.Graph.Core": "2.0.5"
         }
       },
+      "Microsoft.Identity.Client": {
+        "type": "Direct",
+        "requested": "[4.39.0, )",
+        "resolved": "4.39.0",
+        "contentHash": "+/y4ELXYqnAbiqhEgFAl3riBbkMeCw8+6+Y8r367bUf6zWhlNUjhm360VsTMBgqbPyfJld5X+cJkDhDCrudezA=="
+      },
       "Microsoft.IdentityModel.Protocols.OpenIdConnect": {
         "type": "Direct",
         "requested": "[6.15.0, )",
@@ -85,11 +91,6 @@
           "System.Security.Claims": "4.3.0",
           "System.Text.Json": "5.0.2"
         }
-      },
-      "Microsoft.Identity.Client": {
-        "type": "Transitive",
-        "resolved": "4.35.1",
-        "contentHash": "u7IU0HlOG+nedpG/syrKStAVkHfp2cBJe09udQF8jFiQs3784dGteMneijM61g4NIGBi3XmDDNnbmPVi2K94Ng=="
       },
       "Microsoft.IdentityModel.JsonWebTokens": {
         "type": "Transitive",
