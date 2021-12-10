@@ -77,6 +77,7 @@ jobs:
 
     - name: Ensure Telerik NuGet source
       run: |
+        dotnet nuget remove source Telerik
         dotnet nuget add source 'https://nuget.telerik.com/v3/index.json' \
           -n Telerik \
           -u ${{ secrets.REGISTRY_USER }} \
