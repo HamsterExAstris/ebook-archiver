@@ -2379,7 +2379,8 @@
         "dependencies": {
           "Microsoft.Extensions.Configuration.Abstractions": "6.0.0",
           "Microsoft.Extensions.Configuration.Binder": "6.0.0",
-          "Microsoft.Graph": "4.11.0"
+          "Microsoft.Graph": "4.11.0",
+          "Microsoft.IdentityModel.Protocols.OpenIdConnect": "6.15.0"
         }
       },
       "ebookarchiver.data.mysql": {
