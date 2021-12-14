@@ -4,7 +4,7 @@
   "private": true,
   "devDependencies": {
     "@babel/core": "^7.16.5",
-    "@babel/preset-env": "^7.16.4",
+    "@babel/preset-env": "^7.16.5",
     "@progress/kendo-theme-bootstrap": "4.43.0",
     "del": "^6.0.0",
     "gulp": "^4.0.2",
