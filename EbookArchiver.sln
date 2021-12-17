@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EbookArchiver.DatastoreImpo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EbookArchiver.KoboLibraryFormatter", "EbookArchiver.KoboLibraryFormatter\EbookArchiver.KoboLibraryFormatter.csproj", "{CCE53E6F-B06B-4C1C-910E-01EE63D2E6AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EbookArchiver.KindleLibraryGatherer", "EbookArchiver.KindleLibraryGatherer\EbookArchiver.KindleLibraryGatherer.csproj", "{8DE30CD0-1413-4181-A129-DD360756F6D7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +107,18 @@ Global
 		{CCE53E6F-B06B-4C1C-910E-01EE63D2E6AD}.Release|x64.Build.0 = Release|Any CPU
 		{CCE53E6F-B06B-4C1C-910E-01EE63D2E6AD}.Release|x86.ActiveCfg = Release|Any CPU
 		{CCE53E6F-B06B-4C1C-910E-01EE63D2E6AD}.Release|x86.Build.0 = Release|Any CPU
+		{8DE30CD0-1413-4181-A129-DD360756F6D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DE30CD0-1413-4181-A129-DD360756F6D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DE30CD0-1413-4181-A129-DD360756F6D7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8DE30CD0-1413-4181-A129-DD360756F6D7}.Debug|x64.Build.0 = Debug|Any CPU
+		{8DE30CD0-1413-4181-A129-DD360756F6D7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8DE30CD0-1413-4181-A129-DD360756F6D7}.Debug|x86.Build.0 = Debug|Any CPU
+		{8DE30CD0-1413-4181-A129-DD360756F6D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DE30CD0-1413-4181-A129-DD360756F6D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DE30CD0-1413-4181-A129-DD360756F6D7}.Release|x64.ActiveCfg = Release|Any CPU
+		{8DE30CD0-1413-4181-A129-DD360756F6D7}.Release|x64.Build.0 = Release|Any CPU
+		{8DE30CD0-1413-4181-A129-DD360756F6D7}.Release|x86.ActiveCfg = Release|Any CPU
+		{8DE30CD0-1413-4181-A129-DD360756F6D7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
