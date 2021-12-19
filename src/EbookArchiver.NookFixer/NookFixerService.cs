@@ -1,4 +1,5 @@
 ﻿using Ionic.Zip;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -16,7 +17,7 @@ namespace EbookArchiver.NookFixer
             _services = services;
         }
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        public async Task StartAsync(CancellationToken cancellationToken)
         {
             string? targetPath = _configuration["outputPath"];
             if (string.IsNullOrWhiteSpace(targetPath))
@@ -29,7 +30,8 @@ namespace EbookArchiver.NookFixer
             using IServiceScope? scope = _services.CreateScope();
             DownloadDbContext? downloadDbContext = scope.ServiceProvider.GetRequiredService<DownloadDbContext>();
 
-            foreach (DownloadDocument? book in downloadDbContext.DownloadDocuments.Where(d => d.SavedFileName != string.Empty))
+            await foreach (DownloadDocument? book in downloadDbContext.DownloadDocuments.Where(d => d.SavedFileName != string.Empty)
+                .AsAsyncEnumerable().WithCancellation(cancellationToken))
             {
                 Console.Write(Path.GetFileName(book.SavedFileName));
                 if (File.Exists(book.SavedFileName))
@@ -42,7 +44,11 @@ namespace EbookArchiver.NookFixer
                     else
                     {
                         File.Copy(book.SavedFileName, targetFile);
-                        if (book.License != string.Empty)
+                        if (!Path.GetExtension(targetFile).Equals(".epub", StringComparison.OrdinalIgnoreCase))
+                        {
+                            Console.WriteLine(" - not an EPUB");
+                        }
+                        else if (book.License != string.Empty)
                         {
                             RestoreLicense(targetFile, book.License);
                         }
@@ -56,10 +62,28 @@ namespace EbookArchiver.NookFixer
                 {
                     Console.WriteLine(" - missing");
                 }
-
             }
 
-            return Task.CompletedTask;
+            LibraryDbContext? libraryDbContext = scope.ServiceProvider.GetRequiredService<LibraryDbContext>();
+            using (var outfile = new StreamWriter(Path.Combine(targetPath, "library.csv")))
+            {
+                await outfile.WriteLineAsync("EAN,ISBN,Title,Series,SeriesIndex,Publisher");
+
+                // Since duplicate titles exist, we need to handle the table separately rather than trying to set it up as a navigation property.
+                Dictionary<string, LibraryProductV2Title>? titles = await libraryDbContext.Titles.Distinct().ToDictionaryAsync(k => k.Ean, v => v, cancellationToken);
+
+                await foreach (LibraryProductV2? product in libraryDbContext.Products.Where(p => !p.Item.IsSampleEan)
+                    .AsAsyncEnumerable().WithCancellation(cancellationToken))
+                {
+                    LibraryProductV2Title? title = titles.GetValueOrDefault(product.Ean);
+
+                    string? seriesNumberText = string.IsNullOrWhiteSpace(product.SeriesNumber) || product.SeriesNumber == "0"
+                        ? null
+                        : product.SeriesNumber;
+
+                    await outfile.WriteLineAsync($"\"\t{product.Ean}\",\"\t{product.Isbn}\",\"{title?.Title}\",\"{product.SeriesTitle}\",{seriesNumberText},\"{product.Publisher}\"");
+                }
+            }
         }
 
         private static void RestoreLicense(string epubPath, string licenseText)

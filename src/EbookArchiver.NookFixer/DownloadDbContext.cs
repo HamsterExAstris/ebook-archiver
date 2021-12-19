@@ -4,7 +4,7 @@ namespace EbookArchiver.NookFixer
 {
     internal class DownloadDbContext : DbContext
     {
-        public DownloadDbContext(DbContextOptions options) : base(options)
+        public DownloadDbContext(DbContextOptions<DownloadDbContext> options) : base(options)
         {
         }
 
