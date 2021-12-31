@@ -3,7 +3,7 @@
   "name": "ebook-archiver",
   "private": true,
   "devDependencies": {
-    "@babel/core": "^7.16.5",
+    "@babel/core": "^7.16.7",
     "@babel/preset-env": "^7.16.5",
     "@progress/kendo-theme-bootstrap": "4.43.0",
     "del": "^6.0.0",
