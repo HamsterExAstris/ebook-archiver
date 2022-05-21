@@ -41,6 +41,10 @@ namespace EbookArchiver.NookFixer
                     {
                         Console.WriteLine(" - already exists");
                     }
+                    else if (new FileInfo(book.SavedFileName).CreationTimeUtc < DateTime.UtcNow.AddDays(-1))
+                    {
+                        Console.WriteLine(" - more than 24 hours old");
+                    }
                     else
                     {
                         File.Copy(book.SavedFileName, targetFile);
