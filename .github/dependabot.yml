@@ -14,3 +14,10 @@ updates:
     # Check the nuget registry for updates every day (weekdays)
     schedule: 
       interval: "daily"
+  # Enable version updates for GItHub Actions 
+  - package-ecosystem: "github-actions"
+    # Look for GitHub Actions dependency info from the `root` directory
+    directory: "/"
+    # Check for updates every day (weekdays)
+    schedule: 
+      interval: "daily"
