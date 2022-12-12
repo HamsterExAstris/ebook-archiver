@@ -21,6 +21,6 @@
     "bootstrap": "^5.2.0",
     "jquery": "^3.6.1",
     "jquery-validation": "^1.19.5",
-    "jquery-validation-unobtrusive": "^3.2.12"
+    "jquery-validation-unobtrusive": "^4.0.0"
   }
 }
