@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.11.6",
-    "@progress/kendo-ui": "2021.3.1207",
+    "@progress/kendo-ui": "2022.3.1109",
     "bootstrap": "^5.2.3",
     "jquery": "^3.6.2",
     "jquery-validation": "^1.19.5",
