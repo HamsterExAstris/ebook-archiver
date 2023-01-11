@@ -19,7 +19,7 @@
     "@popperjs/core": "^2.11.6",
     "@progress/kendo-ui": "2021.3.1207",
     "bootstrap": "^5.2.3",
-    "jquery": "^3.6.2",
+    "jquery": "^3.6.3",
     "jquery-validation": "^1.19.5",
     "jquery-validation-unobtrusive": "^4.0.0"
   }
