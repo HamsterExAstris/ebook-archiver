@@ -5,7 +5,7 @@
   "devDependencies": {
     "@babel/core": "^7.20.5",
     "@babel/preset-env": "^7.20.2",
-    "@progress/kendo-theme-bootstrap": "4.43.0",
+    "@progress/kendo-theme-bootstrap": "6.1.0",
     "del": "^7.0.0",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
