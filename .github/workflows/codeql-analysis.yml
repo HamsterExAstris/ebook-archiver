@@ -69,7 +69,7 @@ jobs:
     #   make release
 
     - name: Set up .NET Core
-      uses: actions/setup-dotnet@v3.0.1
+      uses: actions/setup-dotnet@v3.1.0
       with:
         dotnet-version: '6.0.x'
         include-prerelease: true
