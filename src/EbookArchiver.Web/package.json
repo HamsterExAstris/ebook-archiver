@@ -16,7 +16,7 @@
     "merge-stream": "^2.0.0"
   },
   "dependencies": {
-    "@popperjs/core": "^2.11.6",
+    "@popperjs/core": "^2.11.8",
     "@progress/kendo-ui": "2021.3.1207",
     "bootstrap": "^5.2.3",
     "jquery": "^3.6.4",
