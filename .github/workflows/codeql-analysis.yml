@@ -43,7 +43,7 @@ jobs:
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
+      uses: github/codeql-action/init@v3
       with:
         languages: ${{ matrix.language }}
         # If you wish to specify custom queries, you can do so here or in a config file.
@@ -54,7 +54,7 @@ jobs:
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
     - name: Autobuild
-      uses: github/codeql-action/autobuild@v2
+      uses: github/codeql-action/autobuild@v3
       if: ${{ matrix.language != 'csharp' }}
 
     # ℹ️ Command-line programs to run using the OS shell.
@@ -69,7 +69,7 @@ jobs:
     #   make release
 
     - name: Set up .NET Core
-      uses: actions/setup-dotnet@v3.0.1
+      uses: actions/setup-dotnet@v4.0.0
       with:
         dotnet-version: '6.0.x'
         include-prerelease: true
@@ -94,4 +94,4 @@ jobs:
       if: ${{ matrix.language == 'csharp' }}
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
+      uses: github/codeql-action/analyze@v3
