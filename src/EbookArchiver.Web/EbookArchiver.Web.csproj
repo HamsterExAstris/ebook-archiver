@@ -23,10 +23,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Identity.Web" Version="1.24.1" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="2.5.0" />
     <PackageReference Include="Microsoft.Identity.Web.MicrosoftGraph" Version="1.24.1" />
     <PackageReference Include="Microsoft.Identity.Web.UI" Version="1.24.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.5" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.14" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
     <PackageReference Include="Telerik.UI.for.AspNet.Core" Version="2021.3.1207" />
   </ItemGroup>
